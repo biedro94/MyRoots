@@ -1,10 +1,14 @@
-"use strict";
-require('../../Scripts/typings/knockout/knockout.d.ts');
-require('../../Scripts/typings/jquery/jquery.d.ts');
-var Home = (function () {
-    function Home() {
+/// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
+/// <reference path="../../Scripts/typings/knockout/knockout.d.ts" />
+/// <reference path="../../Scripts/typings/knockout/tests/jasmine.extensions.d.ts" />
+$(document).ready(function () {
+    var vm = document.getElementById("Home");
+    ko.applyBindings(new HomeViewModel(), vm);
+});
+var HomeViewModel = (function () {
+    function HomeViewModel() {
+        console.log("Weszlo");
     }
-    return Home;
+    return HomeViewModel;
 }());
-exports.Home = Home;
 //# sourceMappingURL=Home.js.map
