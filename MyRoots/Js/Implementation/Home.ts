@@ -11,7 +11,7 @@ $(document).ready(function () {
 class HomeViewModel {
 
     constructor() {
-        console.log("Weszlo");
+       
     }
 
 }
