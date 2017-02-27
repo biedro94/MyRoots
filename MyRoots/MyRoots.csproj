@@ -212,11 +212,19 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\myroots.png" />
+    <Content Include="Content\style_layout\font-awesome.css" />
+    <Content Include="Content\style_layout\jquery.gritter.css" />
+    <Content Include="Content\style_layout\line-icons.css" />
+    <Content Include="Content\style_layout\style-responsive.css" />
+    <Content Include="Content\style_layout\styles.css" />
+    <Content Include="Content\sweetalert.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Js\Implementation\Home.js" />
+    <Content Include="Scripts\added_libs\sweetalert-dev.js" />
     <Content Include="Scripts\axcorlib.js" />
     <Content Include="Scripts\axcorlib.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -235,6 +243,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-3.4.1.debug.js" />
     <Content Include="Scripts\knockout-3.4.1.js" />
+    <Content Include="Scripts\layout_scripts\common-scripts.js" />
+    <Content Include="Scripts\layout_scripts\gritter-conf.js" />
+    <Content Include="Scripts\layout_scripts\jquery.dcjqaccordion.2.7.js" />
+    <Content Include="Scripts\layout_scripts\jquery.gritter.js" />
+    <Content Include="Scripts\layout_scripts\jquery.nicescroll.js" />
+    <Content Include="Scripts\layout_scripts\jquery.scrollTo.min.js" />
+    <Content Include="Scripts\layout_scripts\jquery.sparkline.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\mscorlib.js" />
     <Content Include="Scripts\mscorlib.min.js" />
