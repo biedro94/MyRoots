@@ -10,3 +10,4 @@ var HomeViewModel = (function () {
     }
     return HomeViewModel;
 }());
+//# sourceMappingURL=Home.js.map
