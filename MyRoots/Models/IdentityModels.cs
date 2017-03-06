@@ -29,5 +29,9 @@ namespace MyRoots.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<MyRoots.Models.Tree> Trees { get; set; }
+        public System.Data.Entity.DbSet<MyRoots.Models.FamilyMember> FamilyMembers { get; set; }
+        public System.Data.Entity.DbSet<MyRoots.Models.DegreeOfRelationship> DegreesOfRelationship { get; set; }
     }
 }
