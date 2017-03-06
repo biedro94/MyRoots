@@ -207,6 +207,14 @@
     <Compile Include="Migrations\201702271706255_InitialCreate.Designer.cs">
       <DependentUpon>201702271706255_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703061717313_Init2.cs" />
+    <Compile Include="Migrations\201703061717313_Init2.Designer.cs">
+      <DependentUpon>201703061717313_Init2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703061720035_Init3.cs" />
+    <Compile Include="Migrations\201703061720035_Init3.Designer.cs">
+      <DependentUpon>201703061720035_Init3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DegreeOfRelationship.cs" />
@@ -295,6 +303,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Trees\Create.cshtml" />
+    <Content Include="Views\Trees\Delete.cshtml" />
+    <Content Include="Views\Trees\Details.cshtml" />
+    <Content Include="Views\Trees\Edit.cshtml" />
+    <Content Include="Views\Trees\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -323,6 +336,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201702271706255_InitialCreate.resx">
       <DependentUpon>201702271706255_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703061717313_Init2.resx">
+      <DependentUpon>201703061717313_Init2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703061720035_Init3.resx">
+      <DependentUpon>201703061720035_Init3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
