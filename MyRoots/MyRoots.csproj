@@ -200,6 +200,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MyRootController.cs" />
+    <Compile Include="Controllers\TreesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -214,6 +216,10 @@
     <Compile Include="Migrations\201703061720035_Init3.cs" />
     <Compile Include="Migrations\201703061720035_Init3.Designer.cs">
       <DependentUpon>201703061720035_Init3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703061723165_Init31.cs" />
+    <Compile Include="Migrations\201703061723165_Init31.Designer.cs">
+      <DependentUpon>201703061723165_Init31.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -313,6 +319,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Js\Controllers\" />
     <Folder Include="Js\Models\" />
+    <Folder Include="Views\MyRoot\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -342,6 +349,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703061720035_Init3.resx">
       <DependentUpon>201703061720035_Init3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703061723165_Init31.resx">
+      <DependentUpon>201703061723165_Init31.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

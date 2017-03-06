@@ -3,7 +3,7 @@ namespace MyRoots.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Init3 : DbMigration
+    public partial class Init31 : DbMigration
     {
         public override void Up()
         {
@@ -18,9 +18,6 @@ namespace MyRoots.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.FamilyMembers", "DegreeOfRelationship_DegreeOfRelationshipId", "dbo.DegreeOfRelationships");
-            DropIndex("dbo.FamilyMembers", new[] { "DegreeOfRelationship_DegreeOfRelationshipId" });
-            DropColumn("dbo.FamilyMembers", "DegreeOfRelationship_DegreeOfRelationshipId");
         }
     }
 }
