@@ -58,6 +58,7 @@ namespace MyRoots.Controllers
             {
                 return "Użytkownik niezalogowany";
             }
+        }
 
         public ActionResult Login()
         {
@@ -96,10 +97,10 @@ namespace MyRoots.Controllers
 
 
 
-        public static List<T> GetCollection<T>(string storedProcedure, object args)
-        where T : class, new()
-        {
-            List<T> result = new List<T>();
+        //public static List<T> GetCollection<T>(string storedProcedure, object args)
+        //where T : class, new()
+        //{
+        //    List<T> result = new List<T>();
 
         //public static List<T> GetCollection<T>(string storedProcedure, object args)
         //where T : class, new()
