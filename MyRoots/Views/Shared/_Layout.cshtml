@@ -47,6 +47,9 @@
     <script src="~/Scripts/added_libs/sweetalert-dev.js"></script>
 </body>
 </html>*@
+
+
+
 <!DOCTYPE html>
 <html>
     
@@ -72,7 +75,9 @@
     </head>
 
     <body>
-
+        
+        @if (!User.Identity.Name.IsEmpty())
+        { 
         <section id="container">
             <header class="header black-bg">
                 <div class="sidebar-toggle-box">
@@ -80,7 +85,7 @@
                 </div>
                 <a href="index.html" class="logo"><img class="img-responsive logos" src="~/Content/img/myroots.png"/></a>
                 <div class="nav notify-row" id="top_menu">
-                    <ul class="nav top-menu">
+                    @*<ul class="nav top-menu">
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
                                 <i class="fa fa-tasks"></i>
@@ -148,8 +153,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <!-- settings end -->
-                        <!-- inbox dropdown start-->
                         <li id="header_inbox_bar" class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
                                 <i class="fa fa-envelope-o"></i>
@@ -213,14 +216,19 @@
                                 </li>
                             </ul>
                         </li>
-                        <!-- inbox dropdown end -->
-                    </ul>
-                    <!--  notification end -->
+                    </ul>*@
                 </div>
                 <div class="top-menu">
-                    <ul class="nav pull-right top-menu">
-                        <li><a class="logout" href="login.html">Logout</a></li>
-                    </ul>
+                    @if (Request.IsAuthenticated)
+                    {
+                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <ul class="nav pull-right top-menu">
+                                <li><a href="javascript:document.getElementById('logoutForm').submit()" class="logout">Logout</a></li>
+                            </ul>
+                        }
+                    }                    
                 </div>
             </header>
             <!--header end-->
@@ -347,6 +355,12 @@
             </div>
             <!--footer end-->
         </section>
+
+        }
+        else
+        {
+            @RenderBody()
+        }
 
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
