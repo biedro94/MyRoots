@@ -5,6 +5,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace MyRoots.Controllers
 {
@@ -12,12 +14,50 @@ namespace MyRoots.Controllers
     {
         public static ApplicationDbContext db = new ApplicationDbContext();
 
-        public string getUserId()
+        [HttpGet]
+        public string GetUserEmail()
         {
+            string userId = User.Identity.GetUserId();
 
-            return MyRootController.GetScalar<string>("ssdasd");
+            if(userId != null)
+            {
+                var query = db.Users
+                    .Where(c => c.Id == userId)
+                    .Select(c => c.Email).FirstOrDefault();
 
+                return query;
+            }
+            else
+            {
+                return "Użytkownik niezalogowany";
+            }
         }
+
+        [HttpGet]
+        public string GetFirstNameAndLastName()
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (userId != null)
+            {
+                var queryFirstName = db.Users
+                    .Where(c => c.Id == userId)
+                    .Select(c => c.FirstName).FirstOrDefault();
+
+                var queryLastName = db.Users
+                    .Where(c => c.Id == userId)
+                    .Select(c => c.LastName).FirstOrDefault();
+
+                string query = queryFirstName + " " + queryLastName;
+
+                return query;
+            }
+            else
+            {
+                return "Użytkownik niezalogowany";
+            }
+        }
+
 
 
 

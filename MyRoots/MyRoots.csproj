@@ -198,6 +198,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Extensions.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MyRootController.cs" />
@@ -220,6 +221,10 @@
     <Compile Include="Migrations\201703061723165_Init31.cs" />
     <Compile Include="Migrations\201703061723165_Init31.Designer.cs">
       <DependentUpon>201703061723165_Init31.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703082218268_addedFirstNameandLastName.cs" />
+    <Compile Include="Migrations\201703082218268_addedFirstNameandLastName.Designer.cs">
+      <DependentUpon>201703082218268_addedFirstNameandLastName.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -352,6 +357,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703061723165_Init31.resx">
       <DependentUpon>201703061723165_Init31.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703082218268_addedFirstNameandLastName.resx">
+      <DependentUpon>201703082218268_addedFirstNameandLastName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
