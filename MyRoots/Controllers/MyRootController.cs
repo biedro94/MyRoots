@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace MyRoots.Controllers
 {
@@ -12,79 +13,130 @@ namespace MyRoots.Controllers
     {
         public static ApplicationDbContext db = new ApplicationDbContext();
 
-        public string getUserId()
+        public ActionResult Login()
         {
-
-            return MyRootController.GetScalar<string>("ssdasd");
-
-        }
-
-
-
-
-
-
-
-        public static List<T> GetCollection<T>(string storedProcedure, object args)
-        where T : class, new()
-        {
-            List<T> result = new List<T>();
-
-            var queryResult = db.Database.SqlQuery<T>(storedProcedure, args);
-
-            if (queryResult.HasValue())
+            if (User.Identity.IsAuthenticated)
             {
-                result = queryResult.AsEnumerable().ToList<T>();
-            }
-            
-            return result;
-        }
-
-        public static T GetObject<T>(string storedProcedure, object args)
-        where T : class, new()
-        {
-            T result = new T();
-
-            var queryResult = db.Database.SqlQuery<T>(storedProcedure, args);
-
-            if (queryResult.HasValue())
+                return RedirectToAction("Index", "MyRoot");
+            }else
             {
-                result = queryResult.AsEnumerable().FirstOrDefault();
-            }
-
-            return result;
+                return View();
+            }            
         }
 
-
-        public static T GetScalar<T>(string storedProcedure, object args)
-        where T : struct
+        public ActionResult Index()
         {
-            T result = default(T);
-
-            var queryResult = db.Database.SqlQuery<T>(storedProcedure, args);
-
-            if (queryResult.HasValue())
-            {
-                result = queryResult.FirstOrDefault<T>();
-            }
-            
-            return result;
+            return View();
         }
 
-        public static T GetScalar<T>(string storedProcedure)
-        where T : struct
-        {
-            T result = default(T);
 
-            var queryResult = db.Database.SqlQuery<T>(storedProcedure);
 
-            if (queryResult.HasValue())
-            {
-                result = queryResult.FirstOrDefault<T>();
-            }
+        //[HttpGet]
+        //public string GetUserEmail()
+        //{
+        //    string userId = User.Identity.GetUserId();
+        //    return MyRootController.GetString<string>("MyRoots_GetUserEmail", new { userId = userId });
+        //    var queryResult = db.Database.SqlQuery<string>("MyRoots_GetUserEmail @userId", new SqlParameter("@userId", userId));
 
-            return result;
-        }
+        //    string result = default(string);
+
+        //    if (queryResult.HasValue())
+        //    {
+        //        result = queryResult.FirstOrDefault<string>();
+        //    }
+
+        //    return result;
+        //}
+
+        //public static List<T> GetCollection<T>(string storedProcedure, object args)
+        //where T : class, new()
+        //{
+        //    List<T> result = new List<T>();
+
+        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure, args);
+
+        //    if (queryResult.HasValue())
+        //    {
+        //        result = queryResult.AsEnumerable().ToList<T>();
+        //    }
+
+        //    return result;
+        //}
+
+        //public static T GetObject<T>(string storedProcedure, object args)
+        //where T : class, new()
+        //{
+        //    T result = default(T);
+
+        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure, args);
+
+        //    if (queryResult.HasValue())
+        //    {
+        //        result = queryResult.AsEnumerable().FirstOrDefault();
+        //    }
+
+        //    return result;
+        //}
+
+
+        //public static T GetScalar<T>(string storedProcedure, object args)
+        //where T : struct
+        //{
+        //    T result = default(T);
+
+        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure, args);
+
+        //    if (queryResult.HasValue())
+        //    {
+        //        result = queryResult.FirstOrDefault<T>();
+        //    }
+
+        //    return result;
+        //}
+
+        //public static T GetScalar<T>(string storedProcedure)
+        //where T : struct
+        //{
+        //    T result = default(T);
+
+        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure);
+
+        //    if (queryResult.HasValue())
+        //    {
+        //        result = queryResult.FirstOrDefault<T>();
+        //    }
+
+        //    return result;
+        //}
+
+        //public static T GetString<T>(string storedProcedure)
+        //{
+        //    T result = default(T);
+
+        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure);
+
+        //    if (queryResult.HasValue())
+        //    {
+        //        result = queryResult.FirstOrDefault<T>();
+        //    }
+
+        //    return result;
+        //}
+
+        //public static T GetString<T>(string storedProcedure, object args)
+        //{
+
+        //    T result = default(T);
+
+        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure, args);
+
+        //    if (queryResult.HasValue())
+        //    {
+        //        result = queryResult.FirstOrDefault<T>();
+        //    }
+
+        //    return result;
+        //}
 
 
 

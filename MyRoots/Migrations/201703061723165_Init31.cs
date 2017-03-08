@@ -7,10 +7,6 @@ namespace MyRoots.Migrations
     {
         public override void Up()
         {
-            DropForeignKey("dbo.FamilyMembers", "DegreeOfRelationship_DegreeOfRelationshipId", "dbo.DegreeOfRelationships");
-            DropIndex("dbo.FamilyMembers", new[] { "DegreeOfRelationship_DegreeOfRelationshipId" });
-            DropColumn("dbo.FamilyMembers", "DegreeOfRelationship_DegreeOfRelationshipId");
-
             AddColumn("dbo.FamilyMembers", "DegreeOfRelationship_DegreeOfRelationshipId", c => c.Int());
             CreateIndex("dbo.FamilyMembers", "DegreeOfRelationship_DegreeOfRelationshipId");
             AddForeignKey("dbo.FamilyMembers", "DegreeOfRelationship_DegreeOfRelationshipId", "dbo.DegreeOfRelationships", "DegreeOfRelationshipId");
