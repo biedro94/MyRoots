@@ -74,6 +74,51 @@ namespace MyRoots.Controllers
             return tree;
         }
 
+        public FamilyMember CreateFamilyMember(string FirstName,string LastName,DateTime dateOfBirth,DateTime dateOfDeath,string BirthPlace,string Description,string Image,int DegreeOfRealtionshipId)
+        {
+            string userId = User.Identity.GetUserId();
+            int treeId = db.Trees
+                .Where(c => c.ApplicationUser.Id == userId)
+                .Select(c => c.TreeId).FirstOrDefault();
+
+            FamilyMember fm = new FamilyMember();
+            fm.FirstName = FirstName;
+            fm.LastName = LastName;
+            fm.DateOfBirth = dateOfBirth;
+            fm.DateOfDeath = dateOfDeath;
+            fm.BirthPlace = BirthPlace;
+            fm.Description = Description;
+            fm.Image = Image;
+            fm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == DegreeOfRealtionshipId).FirstOrDefault();
+            fm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+
+            db.FamilyMembers.Add(fm);
+            db.SaveChanges();
+
+            return fm;
+        }
+
+        public void DeleteTree()
+        {
+            string userId = User.Identity.GetUserId();
+            int treeId = db.Trees
+                .Where(c => c.ApplicationUser.Id == userId)
+                .Select(c => c.TreeId).FirstOrDefault();
+
+            foreach (var familyMember in db.FamilyMembers.Where(c => c.Tree.TreeId == treeId))
+            {
+                db.FamilyMembers.Remove(familyMember);
+                db.SaveChanges();
+            }
+
+            Tree tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+
+            db.Trees.Remove(tree);
+            db.SaveChanges();
+        }
+
+
+
 
         public ActionResult Login()
         {
