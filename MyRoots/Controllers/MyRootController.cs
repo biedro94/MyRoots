@@ -60,6 +60,21 @@ namespace MyRoots.Controllers
             }
         }
 
+        public Tree CreateTree(string treeName)
+        {
+            string userid = User.Identity.GetUserId();
+            Tree tree = new Tree();
+            tree.TreeName = treeName;
+            tree.DateOfCreation = DateTime.Now;
+            tree.ApplicationUser = db.Users.Where(c => c.Id == userid).FirstOrDefault();
+            
+            db.Trees.Add(tree);
+            db.SaveChanges();
+
+            return tree;
+        }
+
+
         public ActionResult Login()
         {
             if (User.Identity.IsAuthenticated)

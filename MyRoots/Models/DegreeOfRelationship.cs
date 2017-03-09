@@ -11,5 +11,7 @@ namespace MyRoots.Models
         public string Name { get; set; }
         public string ShortName { get; set; }
         public bool Me { get; set; }
+
+        public virtual Tree Tree { get; set; }
     }
 }
