@@ -7,7 +7,6 @@ $(document).ready(function () {
 });
 var HomeViewModel = (function () {
     function HomeViewModel() {
-        console.log("Weszlo");
     }
     return HomeViewModel;
 }());
