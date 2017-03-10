@@ -12,6 +12,5 @@ namespace MyRoots.Models
         public DateTime DateOfCreation { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
-        public virtual DegreeOfRelationship DegreeOfRelationship { get; set; }
     }
 }

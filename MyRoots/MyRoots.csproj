@@ -271,6 +271,26 @@
     <Compile Include="Migrations\201703061723165_Init31.Designer.cs">
       <DependentUpon>201703061723165_Init31.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703082218268_addedFirstNameandLastName.cs" />
+    <Compile Include="Migrations\201703082218268_addedFirstNameandLastName.Designer.cs">
+      <DependentUpon>201703082218268_addedFirstNameandLastName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703091126360_removedTreeToDegreeRelation.cs" />
+    <Compile Include="Migrations\201703091126360_removedTreeToDegreeRelation.Designer.cs">
+      <DependentUpon>201703091126360_removedTreeToDegreeRelation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703092056391_addedDegreeOfRelationshipIdToTree.cs" />
+    <Compile Include="Migrations\201703092056391_addedDegreeOfRelationshipIdToTree.Designer.cs">
+      <DependentUpon>201703092056391_addedDegreeOfRelationshipIdToTree.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703092101581_changedModels.cs" />
+    <Compile Include="Migrations\201703092101581_changedModels.Designer.cs">
+      <DependentUpon>201703092101581_changedModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703092239135_removedRealtionBetweenTreeAndDegreeOfRelationship.cs" />
+    <Compile Include="Migrations\201703092239135_removedRealtionBetweenTreeAndDegreeOfRelationship.Designer.cs">
+      <DependentUpon>201703092239135_removedRealtionBetweenTreeAndDegreeOfRelationship.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DegreeOfRelationship.cs" />
@@ -422,6 +442,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703061723165_Init31.resx">
       <DependentUpon>201703061723165_Init31.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703082218268_addedFirstNameandLastName.resx">
+      <DependentUpon>201703082218268_addedFirstNameandLastName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703091126360_removedTreeToDegreeRelation.resx">
+      <DependentUpon>201703091126360_removedTreeToDegreeRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703092056391_addedDegreeOfRelationshipIdToTree.resx">
+      <DependentUpon>201703092056391_addedDegreeOfRelationshipIdToTree.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703092101581_changedModels.resx">
+      <DependentUpon>201703092101581_changedModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703092239135_removedRealtionBetweenTreeAndDegreeOfRelationship.resx">
+      <DependentUpon>201703092239135_removedRealtionBetweenTreeAndDegreeOfRelationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
