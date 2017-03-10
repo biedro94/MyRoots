@@ -117,6 +117,20 @@ namespace MyRoots.Controllers
             db.SaveChanges();
         }
 
+        public void DeleteFamilyMember(int fmId)
+        {
+            string userId = User.Identity.GetUserId();
+            int treeId = db.Trees
+                .Where(c => c.ApplicationUser.Id == userId)
+                .Select(c => c.TreeId).FirstOrDefault();
+
+            FamilyMember fm = db.FamilyMembers.Where(c => c.Id == fmId).FirstOrDefault();
+
+            db.FamilyMembers.Remove(fm);
+            db.SaveChanges();
+
+        }
+
 
 
 
