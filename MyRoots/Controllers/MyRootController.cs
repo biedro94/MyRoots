@@ -170,6 +170,24 @@ namespace MyRoots.Controllers
             return fm;
         }
 
+        public ICollection<FamilyMember> GetAllFamilyMembers()
+        {
+            List<FamilyMember> list = new List<FamilyMember>();
+
+            string userId = User.Identity.GetUserId();
+            int treeId = db.Trees
+                .Where(c => c.ApplicationUser.Id == userId)
+                .Select(c => c.TreeId).FirstOrDefault();
+
+            foreach (FamilyMember fm in db.FamilyMembers.Where(c => c.Tree.TreeId == treeId))
+            {
+                list.Add(fm);
+            }
+
+            return list;
+        }
+
+
         public ActionResult Login()
         {
             if (User.Identity.IsAuthenticated)
