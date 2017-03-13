@@ -58,7 +58,7 @@ namespace MyRoots.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Zapamiętaj mnie ?")]
         public bool RememberMe { get; set; }
     }
 
@@ -79,6 +79,11 @@ namespace MyRoots.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
     }
 
     public class ResetPasswordViewModel
