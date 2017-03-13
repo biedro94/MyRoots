@@ -200,6 +200,12 @@ namespace MyRoots.Controllers
             }            
         }
 
+        public ActionResult Register()
+        {
+
+                return View();
+        }
+
         public ActionResult Index()
         {
             return View();
