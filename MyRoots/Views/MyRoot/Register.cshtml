@@ -1,7 +1,7 @@
 ﻿@using MyRoots.Models
-@model LoginViewModel
+@model RegisterViewModel
 @{
-    ViewBag.Title = "Log in";
+    ViewBag.Title = "Register";
 }
 
 
@@ -12,14 +12,14 @@
         <div class="col-lg-3 text-center form-container">
             <div class="col-lg-12">
                 <img class="img-responsive logos" src="~/Content/img/myroots.png" />
-            </div>
-            <div class="col-lg-12">
-                <h1 class="signup">Zaloguj się do MyRoots</h1>
-            </div>
+                <div class="col-lg-12">
+                    <h1 class="signup">Zarejestruj się w MyRoots</h1>
+                </div>
+            
             <div class="col-lg-12 form-container-inputs">
                     <div class="col-md-12">
                         <section id="loginForm" class="text-center">
-                            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                             {
                                 @Html.AntiForgeryToken()
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -37,22 +37,36 @@
                                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
+
                                 <div class="form-group">
-                                    <div class="col-md-offset-2 col-md-12">
-                                        <div class="checkbox">
-                                            @Html.CheckBoxFor(m => m.RememberMe)
-                                            @Html.LabelFor(m => m.RememberMe)
-                                        </div>
+                                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label lblwidth" })
+                                    <div class="col-md-12">
+                                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label lblwidth" })
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })                                   
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label lblwidth" })
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <input type="submit" value="Zaloguj" class="btn btn-default" />
+                                        <input type="submit" value="Register" class="btn btn-default" />
                                     </div>
                                 </div>
-                                <p>
-                                    @Html.ActionLink("Nowy w MyRoots? Zarejestruj się ", "Register","MyRoot")
-                                </p>
+                              
                                 @* Enable this once you have account confirmation enabled for password reset functionality
                         <p>
                             @Html.ActionLink("Forgot your password?", "ForgotPassword")

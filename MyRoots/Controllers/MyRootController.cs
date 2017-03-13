@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-
+using System.Data.Entity;
 
 namespace MyRoots.Controllers
 {
@@ -74,7 +74,7 @@ namespace MyRoots.Controllers
             return tree;
         }
 
-        public FamilyMember CreateFamilyMember(string FirstName,string LastName,DateTime dateOfBirth,DateTime dateOfDeath,string BirthPlace,string Description,string Image,int DegreeOfRealtionshipId)
+        public FamilyMember CreateFamilyMember(string FirstName,string LastName,DateTime dateOfBirth,DateTime dateOfDeath,string BirthPlace,string Description,string Image,int DegreeOfRelationshipId)
         {
             string userId = User.Identity.GetUserId();
             int treeId = db.Trees
@@ -89,7 +89,7 @@ namespace MyRoots.Controllers
             fm.BirthPlace = BirthPlace;
             fm.Description = Description;
             fm.Image = Image;
-            fm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == DegreeOfRealtionshipId).FirstOrDefault();
+            fm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == DegreeOfRelationshipId).FirstOrDefault();
             fm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
 
             db.FamilyMembers.Add(fm);
@@ -128,10 +128,64 @@ namespace MyRoots.Controllers
 
             db.FamilyMembers.Remove(fm);
             db.SaveChanges();
-
         }
 
+        public Tree EditTree(string Name)
+        {
+            string userId = User.Identity.GetUserId();
+            int treeId = db.Trees
+                .Where(c => c.ApplicationUser.Id == userId)
+                .Select(c => c.TreeId).FirstOrDefault();
 
+            Tree tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+            tree.TreeName = Name;
+
+            db.Entry(tree).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return tree;
+        }
+
+        public FamilyMember EditFamilyMember(int fmId, string FirstName, string LastName, DateTime dateOfBirth, DateTime dateOfDeath, string BirthPlace, string Description, string Image, int DegreeOfRelationshipId)
+        {
+            string userId = User.Identity.GetUserId();
+            int treeId = db.Trees
+                .Where(c => c.ApplicationUser.Id == userId)
+                .Select(c => c.TreeId).FirstOrDefault();
+
+            FamilyMember fm = db.FamilyMembers.Where(c => c.Id == fmId).FirstOrDefault();
+            fm.FirstName = FirstName;
+            fm.LastName = LastName;
+            fm.DateOfBirth = dateOfBirth;
+            fm.DateOfDeath = dateOfDeath;
+            fm.BirthPlace = BirthPlace;
+            fm.Description = Description;
+            fm.Image = Image;
+            fm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == DegreeOfRelationshipId).FirstOrDefault();
+            fm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+
+            db.Entry(fm).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return fm;
+        }
+
+        public ICollection<FamilyMember> GetAllFamilyMembers()
+        {
+            List<FamilyMember> list = new List<FamilyMember>();
+
+            string userId = User.Identity.GetUserId();
+            int treeId = db.Trees
+                .Where(c => c.ApplicationUser.Id == userId)
+                .Select(c => c.TreeId).FirstOrDefault();
+
+            foreach (FamilyMember fm in db.FamilyMembers.Where(c => c.Tree.TreeId == treeId))
+            {
+                list.Add(fm);
+            }
+
+            return list;
+        }
 
 
         public ActionResult Login()
@@ -139,135 +193,23 @@ namespace MyRoots.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "MyRoot");
-            }else
+            }
+            else
             {
                 return View();
             }            
+        }
+
+        public ActionResult Register()
+        {
+
+                return View();
         }
 
         public ActionResult Index()
         {
             return View();
         }
-
-
-
-        //[HttpGet]
-        //public string GetUserEmail()
-        //{
-        //    string userId = User.Identity.GetUserId();
-        //    return MyRootController.GetString<string>("MyRoots_GetUserEmail", new { userId = userId });
-        //    var queryResult = db.Database.SqlQuery<string>("MyRoots_GetUserEmail @userId", new SqlParameter("@userId", userId));
-
-        //    string result = default(string);
-
-        //    if (queryResult.HasValue())
-        //    {
-        //        result = queryResult.FirstOrDefault<string>();
-        //    }
-
-        //    return result;
-        //}
-
-
-
-        //public static List<T> GetCollection<T>(string storedProcedure, object args)
-        //where T : class, new()
-        //{
-        //    List<T> result = new List<T>();
-
-        //public static List<T> GetCollection<T>(string storedProcedure, object args)
-        //where T : class, new()
-        //{
-        //    List<T> result = new List<T>();
-
-
-        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure, args);
-
-        //    if (queryResult.HasValue())
-        //    {
-        //        result = queryResult.AsEnumerable().ToList<T>();
-        //    }
-
-        //    return result;
-        //}
-
-        //public static T GetObject<T>(string storedProcedure, object args)
-        //where T : class, new()
-        //{
-        //    T result = default(T);
-
-        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure, args);
-
-        //    if (queryResult.HasValue())
-        //    {
-        //        result = queryResult.AsEnumerable().FirstOrDefault();
-        //    }
-
-        //    return result;
-        //}
-
-
-        //public static T GetScalar<T>(string storedProcedure, object args)
-        //where T : struct
-        //{
-        //    T result = default(T);
-
-        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure, args);
-
-        //    if (queryResult.HasValue())
-        //    {
-        //        result = queryResult.FirstOrDefault<T>();
-        //    }
-
-        //    return result;
-        //}
-
-        //public static T GetScalar<T>(string storedProcedure)
-        //where T : struct
-        //{
-        //    T result = default(T);
-
-        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure);
-
-        //    if (queryResult.HasValue())
-        //    {
-        //        result = queryResult.FirstOrDefault<T>();
-        //    }
-
-        //    return result;
-        //}
-
-        //public static T GetString<T>(string storedProcedure)
-        //{
-        //    T result = default(T);
-
-        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure);
-
-        //    if (queryResult.HasValue())
-        //    {
-        //        result = queryResult.FirstOrDefault<T>();
-        //    }
-
-        //    return result;
-        //}
-
-        //public static T GetString<T>(string storedProcedure, object args)
-        //{
-
-        //    T result = default(T);
-
-        //    var queryResult = db.Database.SqlQuery<T>(storedProcedure, args);
-
-        //    if (queryResult.HasValue())
-        //    {
-        //        result = queryResult.FirstOrDefault<T>();
-        //    }
-
-        //    return result;
-        //}
-
-
 
     }
 }
