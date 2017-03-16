@@ -35,6 +35,11 @@ namespace MyRoots.Controllers
             }
         }
 
+        public ActionResult SettingsTree()
+        {
+            return View();
+        }
+
         [HttpGet]
         public string GetFirstNameAndLastName()
         {
@@ -60,18 +65,25 @@ namespace MyRoots.Controllers
             }
         }
 
-        public Tree CreateTree(string treeName)
+        public string CreateTree(string treeName)
         {
             string userid = User.Identity.GetUserId();
-            Tree tree = new Tree();
-            tree.TreeName = treeName;
-            tree.DateOfCreation = DateTime.Now;
-            tree.ApplicationUser = db.Users.Where(c => c.Id == userid).FirstOrDefault();
-            
-            db.Trees.Add(tree);
-            db.SaveChanges();
 
-            return tree;
+            if(db.Trees.Any(c => c.ApplicationUser.Id == userid))
+            {
+                return "Dla tego użytkownika jest już utworzone drzewo";
+            }
+            else
+            {
+                Tree tree = new Tree();
+                tree.TreeName = treeName;
+                tree.DateOfCreation = DateTime.Now;
+                tree.ApplicationUser = db.Users.Where(c => c.Id == userid).FirstOrDefault();
+
+                db.Trees.Add(tree);
+                db.SaveChanges();
+                return "Pomyślnie dodano drzewo";
+            }
         }
 
         public FamilyMember CreateFamilyMember(string FirstName,string LastName,DateTime dateOfBirth,DateTime dateOfDeath,string BirthPlace,string Description,string Image,int DegreeOfRelationshipId)
