@@ -35,6 +35,11 @@ namespace MyRoots.Controllers
             }
         }
 
+        public ActionResult SettingsTree()
+        {
+            return View();
+        }
+
         [HttpGet]
         public string GetFirstNameAndLastName()
         {

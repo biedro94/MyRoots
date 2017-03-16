@@ -409,6 +409,7 @@
     <Content Include="Views\MyRoot\Login.cshtml" />
     <Content Include="Views\MyRoot\Index.cshtml" />
     <Content Include="Views\MyRoot\Register.cshtml" />
+    <Content Include="Views\MyRoot\SettingsTree.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
