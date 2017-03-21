@@ -7,33 +7,33 @@
 
 
 $(document).ready(function () {
-    let vm = document.getElementById("sidebar");
-    ko.applyBindings(new HomeViewModel(), vm);
+
+    let vm = document.getElementById("settingsTree");
+    ko.applyBindings(new SettingsTreeViewModel(), vm);
+
 });
 
-class HomeViewModel {
-    public firstAndLastName = ko.observable();
+class SettingsTreeViewModel {
 
-    constructor() {
-        this.GetCurrentName().then((resolve) => {
-            this.firstAndLastName(resolve);
-        });
-    }
-
+    public treeName = ko.observable<string>();
     public static host: string = window.location.host;
 
+    constructor() {
+        
+    }
 
-    public GetCurrentName() {
+    public insertTreeName() {
+        console.log(this.treeName());
         return new Promise((resolve, rejected) => {
             $.ajax({
-                'url': 'http://'+HomeViewModel.host +'/MyRoot/GetFirstNameAndLastName',
-                'type': 'GET',
+                'url': 'http://' + HomeViewModel.host + '/MyRoot/CreateTree?treeName=' + this.treeName(),
+                'type': 'POST',
                 'success': function (data) {
                     resolve(data);
                 }
             });
 
-        });        
+        }); 
     }
-}
 
+}
