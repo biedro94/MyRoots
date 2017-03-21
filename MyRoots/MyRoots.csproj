@@ -291,6 +291,10 @@
     <Compile Include="Migrations\201703092239135_removedRealtionBetweenTreeAndDegreeOfRelationship.Designer.cs">
       <DependentUpon>201703092239135_removedRealtionBetweenTreeAndDegreeOfRelationship.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703211608190_addedFieldOfImageOfUserInDB.cs" />
+    <Compile Include="Migrations\201703211608190_addedFieldOfImageOfUserInDB.Designer.cs">
+      <DependentUpon>201703211608190_addedFieldOfImageOfUserInDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DegreeOfRelationship.cs" />
@@ -464,6 +468,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703092239135_removedRealtionBetweenTreeAndDegreeOfRelationship.resx">
       <DependentUpon>201703092239135_removedRealtionBetweenTreeAndDegreeOfRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703211608190_addedFieldOfImageOfUserInDB.resx">
+      <DependentUpon>201703211608190_addedFieldOfImageOfUserInDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
