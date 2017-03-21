@@ -81,25 +81,25 @@ namespace MyRoots.Controllers
             }
         }
 
-        public FamilyMember CreateFamilyMember(string FirstName,string LastName,DateTime dateOfBirth,DateTime dateOfDeath,string BirthPlace,string Description,string Image,int DegreeOfRelationshipId)
+        public FamilyMember CreateFamilyMember(FamilyMember fm)
         {
             string userId = User.Identity.GetUserId();
             int treeId = db.Trees
                 .Where(c => c.ApplicationUser.Id == userId)
                 .Select(c => c.TreeId).FirstOrDefault();
 
-            FamilyMember fm = new FamilyMember();
-            fm.FirstName = FirstName;
-            fm.LastName = LastName;
-            fm.DateOfBirth = dateOfBirth;
-            fm.DateOfDeath = dateOfDeath;
-            fm.BirthPlace = BirthPlace;
-            fm.Description = Description;
-            fm.Image = Image;
-            fm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == DegreeOfRelationshipId).FirstOrDefault();
-            fm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+            FamilyMember tmpfm = new FamilyMember();
+            tmpfm.FirstName = fm.FirstName;
+            tmpfm.LastName = fm.LastName;
+            tmpfm.DateOfBirth = fm.DateOfBirth;
+            tmpfm.DateOfDeath = fm.DateOfDeath;
+            tmpfm.BirthPlace = fm.BirthPlace;
+            tmpfm.Description = fm.Description;
+            tmpfm.Image = fm.Image;
+            tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
+            tmpfm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
 
-            db.FamilyMembers.Add(fm);
+            db.FamilyMembers.Add(tmpfm);
             db.SaveChanges();
 
             return fm;
