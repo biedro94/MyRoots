@@ -81,7 +81,7 @@ namespace MyRoots.Controllers
             }
         }
 
-        public FamilyMember CreateFamilyMember(FamilyMember fm)
+        public bool CreateFamilyMember(FamilyMember fm)
         {
             string userId = User.Identity.GetUserId();
             int treeId = db.Trees
@@ -102,7 +102,14 @@ namespace MyRoots.Controllers
             db.FamilyMembers.Add(tmpfm);
             db.SaveChanges();
 
-            return fm;
+            if(db.FamilyMembers.Any(x => x.Id == tmpfm.Id))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void DeleteTree()
