@@ -224,5 +224,13 @@ namespace MyRoots.Controllers
             return View();
         }
 
+        public ActionResult TreeView()
+        {
+            return View();
+        }
+        public ActionResult AccountManagement()
+        {
+            return View();
+        }
     }
 }

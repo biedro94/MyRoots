@@ -411,6 +411,8 @@
     <Content Include="Views\MyRoot\Index.cshtml" />
     <Content Include="Views\MyRoot\Register.cshtml" />
     <Content Include="Views\MyRoot\SettingsTree.cshtml" />
+    <Content Include="Views\MyRoot\TreeView.cshtml" />
+    <Content Include="Views\MyRoot\AccountManagement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

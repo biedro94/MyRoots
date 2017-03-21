@@ -269,7 +269,7 @@
                                 <span>Ustawienia konta</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="calendar.html">Zarządzanie kontem</a></li>
+                                <li>@Html.ActionLink("Zarządanie kontem", "AccountManagement", "MyRoot")</li>
                             </ul>
                         </li>
                         <li class="sub-menu">
@@ -281,7 +281,8 @@
                                 <li>
                                    @Html.ActionLink("Ustawienia drzewa", "SettingsTree","MyRoot")
                                 </li>
-                                <li><a href="login.html">Widok drzewa</a></li>
+                                <li>@Html.ActionLink("Widok drzewa", "TreeView", "MyRoot")</li>
+
                             </ul>
                         </li>
                         @*<li class="sub-menu">
