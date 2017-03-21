@@ -318,6 +318,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Js\Implementation\Home.js" />
+    <Content Include="Js\Implementation\SettingsTree.js" />
     <Content Include="Scripts\added_libs\sweetalert-dev.js" />
     <Content Include="Scripts\axcorlib.js" />
     <Content Include="Scripts\axcorlib.min.js" />
@@ -428,6 +429,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Js\Implementation\Home.ts" />
+    <TypeScriptCompile Include="Js\Implementation\SettingsTree.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\axcorlib.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\mscorlib.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />

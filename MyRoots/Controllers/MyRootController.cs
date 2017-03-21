@@ -21,7 +21,7 @@ namespace MyRoots.Controllers
         {
             string userId = User.Identity.GetUserId();
 
-            if(userId != null)
+            if (userId != null)
             {
                 var query = db.Users
                     .Where(c => c.Id == userId)
@@ -65,6 +65,7 @@ namespace MyRoots.Controllers
             }
         }
 
+        [HttpPost]
         public string CreateTree(string treeName)
         {
             string userid = User.Identity.GetUserId();
