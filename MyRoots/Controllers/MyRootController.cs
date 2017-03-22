@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace MyRoots.Controllers
 {
@@ -21,7 +23,7 @@ namespace MyRoots.Controllers
         {
             string userId = User.Identity.GetUserId();
 
-            if(userId != null)
+            if (userId != null)
             {
                 var query = db.Users
                     .Where(c => c.Id == userId)
@@ -33,6 +35,11 @@ namespace MyRoots.Controllers
             {
                 return "Użytkownik niezalogowany";
             }
+        }
+
+        public ActionResult SettingsTree()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -60,6 +67,7 @@ namespace MyRoots.Controllers
             }
         }
 
+        [HttpPost]
         public string CreateTree(string treeName)
         {
             string userid = User.Identity.GetUserId();
@@ -81,35 +89,35 @@ namespace MyRoots.Controllers
             }
         }
 
-        public bool CreateFamilyMember(FamilyMember fm)
+        [HttpPost]
+        public bool CreateFamilyMember()
         {
+            string jsonData = Request.Form[0];
+            FamilyMember tmpfm = new FamilyMember();
+
+            tmpfm = JsonConvert.DeserializeObject<FamilyMember>(jsonData);
+
+
             string userId = User.Identity.GetUserId();
             int treeId = db.Trees
                 .Where(c => c.ApplicationUser.Id == userId)
                 .Select(c => c.TreeId).FirstOrDefault();
 
-            FamilyMember tmpfm = new FamilyMember();
-            tmpfm.FirstName = fm.FirstName;
-            tmpfm.LastName = fm.LastName;
-            tmpfm.DateOfBirth = fm.DateOfBirth;
-            tmpfm.DateOfDeath = fm.DateOfDeath;
-            tmpfm.BirthPlace = fm.BirthPlace;
-            tmpfm.Description = fm.Description;
-            tmpfm.Image = fm.Image;
-            tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
+            //tmpfm.FirstName = fm.FirstName;
+            //tmpfm.LastName = fm.LastName;
+            //tmpfm.DateOfBirth = fm.DateOfBirth;
+            //tmpfm.DateOfDeath = fm.DateOfDeath;
+            //tmpfm.BirthPlace = fm.BirthPlace;
+            //tmpfm.Description = fm.Description;
+            //tmpfm.Image = fm.Image;
+            //tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
+
             tmpfm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
 
             db.FamilyMembers.Add(tmpfm);
             db.SaveChanges();
 
-            if(db.FamilyMembers.Any(x => x.Id == tmpfm.Id))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return true;
         }
 
         public void DeleteTree()
@@ -160,29 +168,29 @@ namespace MyRoots.Controllers
             return tree;
         }
 
-        public FamilyMember EditFamilyMember(int fmId, string FirstName, string LastName, DateTime dateOfBirth, DateTime dateOfDeath, string BirthPlace, string Description, string Image, int DegreeOfRelationshipId)
-        {
-            string userId = User.Identity.GetUserId();
-            int treeId = db.Trees
-                .Where(c => c.ApplicationUser.Id == userId)
-                .Select(c => c.TreeId).FirstOrDefault();
+        //public FamilyMember EditFamilyMember(int fmId, string FirstName, string LastName, DateTime dateOfBirth, DateTime dateOfDeath, string BirthPlace, string Description, string Image, int DegreeOfRelationshipId)
+        //{
+        //    string userId = User.Identity.GetUserId();
+        //    int treeId = db.Trees
+        //        .Where(c => c.ApplicationUser.Id == userId)
+        //        .Select(c => c.TreeId).FirstOrDefault();
 
-            FamilyMember fm = db.FamilyMembers.Where(c => c.Id == fmId).FirstOrDefault();
-            fm.FirstName = FirstName;
-            fm.LastName = LastName;
-            fm.DateOfBirth = dateOfBirth;
-            fm.DateOfDeath = dateOfDeath;
-            fm.BirthPlace = BirthPlace;
-            fm.Description = Description;
-            fm.Image = Image;
-            fm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == DegreeOfRelationshipId).FirstOrDefault();
-            fm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+        //    FamilyMember fm = db.FamilyMembers.Where(c => c.Id == fmId).FirstOrDefault();
+        //    fm.FirstName = FirstName;
+        //    fm.LastName = LastName;
+        //    fm.DateOfBirth = dateOfBirth;
+        //    fm.DateOfDeath = dateOfDeath;
+        //    fm.BirthPlace = BirthPlace;
+        //    fm.Description = Description;
+        //    fm.Image = Image;
+        //    fm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == DegreeOfRelationshipId).FirstOrDefault();
+        //    fm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
 
-            db.Entry(fm).State = EntityState.Modified;
-            db.SaveChanges();
+        //    db.Entry(fm).State = EntityState.Modified;
+        //    db.SaveChanges();
 
-            return fm;
-        }
+        //    return fm;
+        //}
 
         public ICollection<FamilyMember> GetAllFamilyMembers()
         {
@@ -214,10 +222,24 @@ namespace MyRoots.Controllers
             }            
         }
 
+        public ActionResult Register()
+        {
+
+                return View();
+        }
+
         public ActionResult Index()
         {
             return View();
         }
 
+        public ActionResult TreeView()
+        {
+            return View();
+        }
+        public ActionResult AccountManagement()
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "TreeView";
+}
+
+
+<link rel="stylesheet" type="text/css" href="~/Content/treeView.css" />
+
+<section id="treeView">
+    <div class="familymemberAdd">
+        Dodaj<br/> członka</br> rodu:</br>
+        <a href="#" data-bind="click: familyMemberForm">
+            <span class="glyphicon glyphicon-plus-sign addIcon"></span>
+        </a>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Js/Implementation/TreeView.js")"></script>
+}
+

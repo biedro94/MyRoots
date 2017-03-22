@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Ustawienia drzewa";
+}
+
+<h2>Ustawienia drzewa</h2>
+
+
+<section id="settingsTree">
+    <form>
+        <input type="text" data-bind="textInput: treeName"/>
+        <input type="submit" data-bind="click: insertTreeName" value="Dodaj"/>
+    </form>
+</section>
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Js/Implementation/SettingsTree.js")"></script>
+}
+
+
+
