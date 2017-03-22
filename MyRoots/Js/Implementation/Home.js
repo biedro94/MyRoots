@@ -5,15 +5,24 @@
 /// <reference path="../../scripts/typings/gateway/mscorlib.d.ts" />
 /// <reference path="../../scripts/typings/promise/promise.d.ts" />
 $(document).ready(function () {
-    var vm = document.getElementById("sidebar");
+    var vm = document.getElementById("nav-accordion");
     ko.applyBindings(new HomeViewModel(), vm);
 });
 var HomeViewModel = (function () {
     function HomeViewModel() {
         var _this = this;
         this.firstAndLastName = ko.observable();
+        this.avatarString = ko.observable();
         this.GetCurrentName().then(function (resolve) {
             _this.firstAndLastName(resolve);
+        }, function (rejected) {
+            _this.GetCurrentName();
+        });
+        this.GetAvatar().then(function (resolve) {
+            var tmpString = "data:image/bmp;base64," + resolve;
+            _this.avatarString(tmpString);
+        }, function (rejected) {
+            _this.GetAvatar();
         });
     }
     HomeViewModel.prototype.GetCurrentName = function () {
@@ -27,7 +36,18 @@ var HomeViewModel = (function () {
             });
         });
     };
+    HomeViewModel.prototype.GetAvatar = function () {
+        return new Promise(function (resolve, rejected) {
+            $.ajax({
+                'url': 'http://' + HomeViewModel.host + '/MyRoot/GetAvatarForUser',
+                'type': 'GET',
+                'success': function (data) {
+                    resolve(data);
+                }
+            });
+        });
+    };
+    HomeViewModel.host = window.location.host;
     return HomeViewModel;
 }());
-HomeViewModel.host = window.location.host;
 //# sourceMappingURL=Home.js.map

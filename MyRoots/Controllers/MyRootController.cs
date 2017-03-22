@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
+using System.IO;
+using System.Drawing;
 
 namespace MyRoots.Controllers
 {
@@ -34,6 +36,7 @@ namespace MyRoots.Controllers
                 return "Użytkownik niezalogowany";
             }
         }
+
 
         public ActionResult SettingsTree()
         {
@@ -239,5 +242,67 @@ namespace MyRoots.Controllers
         {
             return View();
         }
-    }
-}
+
+        public ActionResult Settings()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult UploadAvatar()
+        {
+            string userId = User.Identity.GetUserId();
+            if (Request.Files.Count > 0)
+            {
+                var file = Request.Files[0];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    byte[] imageAsBytes = new byte[file.ContentLength];
+
+                    using (BinaryReader reader = new BinaryReader(file.InputStream))
+                    {
+                        imageAsBytes = reader.ReadBytes(file.ContentLength);
+                    }
+
+                    string thePicture = Convert.ToBase64String(imageAsBytes);
+
+                    var queryUser = db.Users
+                    .Where(c => c.Id == userId).FirstOrDefault();
+                    queryUser.Image = thePicture;
+                    
+                    db.Entry(queryUser).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Settings", "MyRoot");
+        }
+
+        [HttpGet]
+        public string GetAvatarForUser()
+        {
+            string userId = User.Identity.GetUserId(); 
+
+            if (userId != null)
+            {
+                var queryImage = db.Users
+                    .Where(c => c.Id == userId)
+                    .Select(c => c.Image)
+                    .FirstOrDefault();
+                if (queryImage != null)
+                {
+                    ViewBag.img = queryImage;
+
+                    return queryImage;
+                }
+                else
+                    return null;
+            }
+            else
+                return null; 
+        }
+
+        }
+   }
