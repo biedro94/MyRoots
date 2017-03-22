@@ -1,0 +1,16 @@
+﻿div.familymemberAdd{
+    display:flex;
+    align-items:flex-end;
+    height:100%;
+    justify-content: flex-end;
+    padding-left:1em;
+}
+
+section#treeView{
+    height:84.5vh;
+}
+
+.addIcon {
+    font-size:45px;
+    padding-left:0.5em;
+}

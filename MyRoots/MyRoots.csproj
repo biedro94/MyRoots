@@ -295,6 +295,10 @@
     <Compile Include="Migrations\201703211608190_addedFieldOfImageOfUserInDB.Designer.cs">
       <DependentUpon>201703211608190_addedFieldOfImageOfUserInDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703221147533_migracja.cs" />
+    <Compile Include="Migrations\201703221147533_migracja.Designer.cs">
+      <DependentUpon>201703221147533_migracja.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DegreeOfRelationship.cs" />
@@ -317,15 +321,19 @@
     <Content Include="Content\style_layout\style-responsive.css" />
     <Content Include="Content\style_layout\styles.css" />
     <Content Include="Content\sweetalert.css" />
+    <Content Include="Content\treeView.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Js\Implementation\Home.js" />
     <Content Include="Js\Implementation\SettingsTree.js" />
+    <Content Include="Js\Implementation\TreeView.js" />
     <Content Include="Scripts\added_libs\sweetalert-dev.js" />
     <Content Include="Scripts\axcorlib.js" />
     <Content Include="Scripts\axcorlib.min.js" />
+    <Content Include="Scripts\bootbox.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\axcorlib.js.map" />
@@ -437,12 +445,15 @@
   <ItemGroup>
     <TypeScriptCompile Include="Js\Implementation\Home.ts" />
     <TypeScriptCompile Include="Js\Implementation\SettingsTree.ts" />
+    <TypeScriptCompile Include="Js\Implementation\TreeView.ts" />
+    <TypeScriptCompile Include="Scripts\typings\bootbox\index.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\axcorlib.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\mscorlib.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout\tests\jasmine.extensions.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\promise\promise.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\sweetalert\sweetalert.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -474,6 +485,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703211608190_addedFieldOfImageOfUserInDB.resx">
       <DependentUpon>201703211608190_addedFieldOfImageOfUserInDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703221147533_migracja.resx">
+      <DependentUpon>201703221147533_migracja.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
