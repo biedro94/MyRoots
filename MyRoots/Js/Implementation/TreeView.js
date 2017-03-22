@@ -30,6 +30,14 @@ var TreeViewModel = (function () {
         Data śmierci :<input type='date' name='dateOfDeath' /><br/>\
         Miejsce urodzenia :<input type='text' name='birthPlace' /><br/>\
         Opis :<input type='text' name='description' /><br/>\
+        Stopień pokrewieństka : <select>\
+            <option value='Ja'>Ja</option>\
+            <option value='Brat'>Brat</option>\
+            <option value='Ojciec'>Ojciec</option>\
+            <option value='Dziadek'>Dziadek</option>\
+            <option value='Pradziadek'>Pradziadek</option>\
+            <option value='Prapradziadek'>Prapradziadek</option>\
+        <select><br/>\
         Zdjęcie :<input type='file' name='zdjecie' /><br/>\
         </form>", function (result) {
             if (result) {
@@ -39,6 +47,25 @@ var TreeViewModel = (function () {
                 var dateOfDeath = $("#infos").find("input[name='dateOfDeath']").val();
                 var birthPlace = $("#infos").find("input[name='birthPlace']").val();
                 var description = $("#infos").find("input[name='description']").val();
+                var degreeOfRelationshipId = $('#infos option:selected').val();
+                if (degreeOfRelationshipId == "Ja") {
+                    fm.degreeOfRelationshipId(new DegreeOfRelationship(2));
+                }
+                else if (degreeOfRelationshipId == "Brat") {
+                    fm.degreeOfRelationshipId(new DegreeOfRelationship(1));
+                }
+                else if (degreeOfRelationshipId == "Ojciec") {
+                    fm.degreeOfRelationshipId(new DegreeOfRelationship(4));
+                }
+                else if (degreeOfRelationshipId == "Dziadek") {
+                    fm.degreeOfRelationshipId(new DegreeOfRelationship(6));
+                }
+                else if (degreeOfRelationshipId == "Pradziadek") {
+                    fm.degreeOfRelationshipId(new DegreeOfRelationship(7));
+                }
+                else if (degreeOfRelationshipId == "Prapradziadek") {
+                    fm.degreeOfRelationshipId(new DegreeOfRelationship(8));
+                }
                 fm.firstName(firstName);
                 fm.lastName(lastName);
                 fm.dateOfBirth(dateOfBirth);
@@ -63,7 +90,7 @@ var FamilyMember = (function () {
         this.description = ko.observable();
         this.image = ko.observable();
         this.treeId = ko.observable();
-        this.degreeOfRelationShipsId = ko.observable();
+        this.degreeOfRelationshipId = ko.observable();
         this.id(0);
         this.firstName("");
         this.lastName("");
@@ -73,8 +100,15 @@ var FamilyMember = (function () {
         this.description("");
         this.image("");
         this.treeId(0);
-        this.degreeOfRelationShipsId(0);
+        this.degreeOfRelationshipId();
     }
     return FamilyMember;
+}());
+var DegreeOfRelationship = (function () {
+    function DegreeOfRelationship(data) {
+        this.degreeOfRealtionshipId = ko.observable();
+        this.degreeOfRealtionshipId(data);
+    }
+    return DegreeOfRelationship;
 }());
 //# sourceMappingURL=TreeView.js.map
