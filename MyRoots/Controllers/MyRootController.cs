@@ -240,14 +240,18 @@ namespace MyRoots.Controllers
         }
         public ActionResult AccountManagement()
         {
+            string userId = User.Identity.GetUserId();
+
+            if (userId != null)
+            {
+                var queryImage = db.Users
+                    .Where(c => c.Id == userId)
+                    .FirstOrDefault();
+                ViewBag.LastName = queryImage.LastName;
+                ViewBag.img = queryImage.Image;
+            }
             return View();
         }
-
-        public ActionResult Settings()
-        {
-            return View();
-        }
-
 
         [HttpPost]
         public ActionResult UploadAvatar()
@@ -277,7 +281,7 @@ namespace MyRoots.Controllers
                     db.SaveChanges();
                 }
             }
-            return RedirectToAction("Settings", "MyRoot");
+            return RedirectToAction("AccountManagement", "MyRoot");
         }
 
         [HttpGet]
@@ -292,11 +296,7 @@ namespace MyRoots.Controllers
                     .Select(c => c.Image)
                     .FirstOrDefault();
                 if (queryImage != null)
-                {
-                    ViewBag.img = queryImage;
-
                     return queryImage;
-                }
                 else
                     return null;
             }
