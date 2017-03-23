@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
+using System.IO;
+using System.Drawing;
 
 namespace MyRoots.Controllers
 {
@@ -21,7 +23,7 @@ namespace MyRoots.Controllers
         {
             string userId = User.Identity.GetUserId();
 
-            if(userId != null)
+            if (userId != null)
             {
                 var query = db.Users
                     .Where(c => c.Id == userId)
@@ -33,6 +35,12 @@ namespace MyRoots.Controllers
             {
                 return "Użytkownik niezalogowany";
             }
+        }
+
+
+        public ActionResult SettingsTree()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -60,42 +68,57 @@ namespace MyRoots.Controllers
             }
         }
 
-        public Tree CreateTree(string treeName)
+        [HttpPost]
+        public string CreateTree(string treeName)
         {
             string userid = User.Identity.GetUserId();
-            Tree tree = new Tree();
-            tree.TreeName = treeName;
-            tree.DateOfCreation = DateTime.Now;
-            tree.ApplicationUser = db.Users.Where(c => c.Id == userid).FirstOrDefault();
-            
-            db.Trees.Add(tree);
-            db.SaveChanges();
 
-            return tree;
+            if(db.Trees.Any(c => c.ApplicationUser.Id == userid))
+            {
+                return "Dla tego użytkownika jest już utworzone drzewo";
+            }
+            else
+            {
+                Tree tree = new Tree();
+                tree.TreeName = treeName;
+                tree.DateOfCreation = DateTime.Now;
+                tree.ApplicationUser = db.Users.Where(c => c.Id == userid).FirstOrDefault();
+
+                db.Trees.Add(tree);
+                db.SaveChanges();
+                return "Pomyślnie dodano drzewo";
+            }
         }
 
-        public FamilyMember CreateFamilyMember(string FirstName,string LastName,DateTime dateOfBirth,DateTime dateOfDeath,string BirthPlace,string Description,string Image,int DegreeOfRelationshipId)
+        public bool CreateFamilyMember(FamilyMember fm)
         {
             string userId = User.Identity.GetUserId();
             int treeId = db.Trees
                 .Where(c => c.ApplicationUser.Id == userId)
                 .Select(c => c.TreeId).FirstOrDefault();
 
-            FamilyMember fm = new FamilyMember();
-            fm.FirstName = FirstName;
-            fm.LastName = LastName;
-            fm.DateOfBirth = dateOfBirth;
-            fm.DateOfDeath = dateOfDeath;
-            fm.BirthPlace = BirthPlace;
-            fm.Description = Description;
-            fm.Image = Image;
-            fm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == DegreeOfRelationshipId).FirstOrDefault();
-            fm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+            FamilyMember tmpfm = new FamilyMember();
+            tmpfm.FirstName = fm.FirstName;
+            tmpfm.LastName = fm.LastName;
+            tmpfm.DateOfBirth = fm.DateOfBirth;
+            tmpfm.DateOfDeath = fm.DateOfDeath;
+            tmpfm.BirthPlace = fm.BirthPlace;
+            tmpfm.Description = fm.Description;
+            tmpfm.Image = fm.Image;
+            tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
+            tmpfm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
 
-            db.FamilyMembers.Add(fm);
+            db.FamilyMembers.Add(tmpfm);
             db.SaveChanges();
 
-            return fm;
+            if(db.FamilyMembers.Any(x => x.Id == tmpfm.Id))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void DeleteTree()
@@ -211,5 +234,75 @@ namespace MyRoots.Controllers
             return View();
         }
 
-    }
-}
+        public ActionResult TreeView()
+        {
+            return View();
+        }
+        public ActionResult AccountManagement()
+        {
+            return View();
+        }
+
+        public ActionResult Settings()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult UploadAvatar()
+        {
+            string userId = User.Identity.GetUserId();
+            if (Request.Files.Count > 0)
+            {
+                var file = Request.Files[0];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    byte[] imageAsBytes = new byte[file.ContentLength];
+
+                    using (BinaryReader reader = new BinaryReader(file.InputStream))
+                    {
+                        imageAsBytes = reader.ReadBytes(file.ContentLength);
+                    }
+
+                    string thePicture = Convert.ToBase64String(imageAsBytes);
+
+                    var queryUser = db.Users
+                    .Where(c => c.Id == userId).FirstOrDefault();
+                    queryUser.Image = thePicture;
+                    
+                    db.Entry(queryUser).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Settings", "MyRoot");
+        }
+
+        [HttpGet]
+        public string GetAvatarForUser()
+        {
+            string userId = User.Identity.GetUserId(); 
+
+            if (userId != null)
+            {
+                var queryImage = db.Users
+                    .Where(c => c.Id == userId)
+                    .Select(c => c.Image)
+                    .FirstOrDefault();
+                if (queryImage != null)
+                {
+                    ViewBag.img = queryImage;
+
+                    return queryImage;
+                }
+                else
+                    return null;
+            }
+            else
+                return null; 
+        }
+
+        }
+   }

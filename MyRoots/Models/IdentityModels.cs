@@ -11,6 +11,7 @@ namespace MyRoots.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Image { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

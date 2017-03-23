@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+
+        <img src="data:image/bmp;base64,@ViewBag.img" />
+
+        @using (Html.BeginForm("UploadAvatar", "MyRoot", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <input type="file" name="file" accept="image/*" />
+            <input type="submit" value="Wybierz" id="submit" name="submit" />
+        }
+
+    </div>
+</body>
+</html>
+
