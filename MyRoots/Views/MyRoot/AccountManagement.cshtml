@@ -5,3 +5,18 @@
 
 <h2>AccountManagement</h2>
 
+
+Nazwisko: <input type="text" name="Nazwisko"  value="@ViewBag.LastName"/><br/>
+Hasło: <input type="password" name="Password" value=""/><br/>
+Powtórz Hasło <input type="password" name="RepeatPassword" value=""/> <br/>
+<img src="data:image/bmp;base64,@ViewBag.img" />
+
+
+@using (Html.BeginForm("UploadAvatar", "MyRoot", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+   
+
+    <input type="file" name="file" accept="image/*" />
+            <input type="submit" value="Wybierz" id="submit" name="submit" />
+}
+
