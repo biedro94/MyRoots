@@ -17,6 +17,6 @@ namespace MyRoots.Models
         public string Image { get; set; }
 
         public virtual Tree Tree { get; set; }
-        public virtual DegreeOfRelationship DegreeOfRelationshipId { get; set; }
+        public virtual DegreeOfRelationship DegreeOfRelationship { get; set; }
     }
 }
