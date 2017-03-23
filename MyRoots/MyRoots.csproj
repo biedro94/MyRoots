@@ -299,6 +299,10 @@
     <Compile Include="Migrations\201703221147533_migracja.Designer.cs">
       <DependentUpon>201703221147533_migracja.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703222208301_migration2.cs" />
+    <Compile Include="Migrations\201703222208301_migration2.Designer.cs">
+      <DependentUpon>201703222208301_migration2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DegreeOfRelationship.cs" />
@@ -488,6 +492,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703221147533_migracja.resx">
       <DependentUpon>201703221147533_migracja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703222208301_migration2.resx">
+      <DependentUpon>201703222208301_migration2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
