@@ -239,7 +239,75 @@ namespace MyRoots.Controllers
         }
         public ActionResult AccountManagement()
         {
+            string userId = User.Identity.GetUserId();
+
+            if (userId != null)
+            {
+                var queryImage = db.Users
+                    .Where(c => c.Id == userId)
+                    .FirstOrDefault();
+                ViewBag.LastName = queryImage.LastName;
+                ViewBag.img = queryImage.Image;
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadAvatar()
+        {
+            string userId = User.Identity.GetUserId();
+            if (Request.Files.Count > 0)
+            {
+                var file = Request.Files[0];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    byte[] imageAsBytes = new byte[file.ContentLength];
+
+                    using (BinaryReader reader = new BinaryReader(file.InputStream))
+                    {
+                        imageAsBytes = reader.ReadBytes(file.ContentLength);
+                    }
+
+                    string thePicture = Convert.ToBase64String(imageAsBytes);
+
+                    var queryUser = db.Users
+                    .Where(c => c.Id == userId).FirstOrDefault();
+                    queryUser.Image = thePicture;
+                    
+                    db.Entry(queryUser).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("AccountManagement", "MyRoot");
+        }
+
+        [HttpGet]
+        public string GetAvatarForUser()
+        {
+            string userId = User.Identity.GetUserId(); 
+
+            if (userId != null)
+            {
+                var queryImage = db.Users
+                    .Where(c => c.Id == userId)
+                    .Select(c => c.Image)
+                    .FirstOrDefault();
+                if (queryImage != null)
+                    return queryImage;
+                else
+                    return null;
+            }
+            else
+                return null; 
+        }
+
+        }
+   }
+=======
             return View();
         }
     }
 }
+>>>>>>> refs/remotes/origin/master
