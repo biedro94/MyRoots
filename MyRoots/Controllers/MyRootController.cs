@@ -239,7 +239,6 @@ namespace MyRoots.Controllers
         }
         public ActionResult AccountManagement()
         {
-<<<<<<< HEAD
             string userId = User.Identity.GetUserId();
 
             if (userId != null)
