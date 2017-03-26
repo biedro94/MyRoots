@@ -28,4 +28,3 @@ var SettingsTreeViewModel = (function () {
     SettingsTreeViewModel.host = window.location.host;
     return SettingsTreeViewModel;
 }());
-//# sourceMappingURL=SettingsTree.js.map

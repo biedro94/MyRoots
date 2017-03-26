@@ -15,14 +15,14 @@ var HomeViewModel = (function () {
         this.avatarString = ko.observable();
         this.GetCurrentName().then(function (resolve) {
             _this.firstAndLastName(resolve);
+            _this.GetAvatar().then(function (resolve) {
+                var tmpString = "data:image/bmp;base64," + resolve;
+                _this.avatarString(tmpString);
+            }, function (rejected) {
+                _this.GetAvatar();
+            });
         }, function (rejected) {
             _this.GetCurrentName();
-        });
-        this.GetAvatar().then(function (resolve) {
-            var tmpString = "data:image/bmp;base64," + resolve;
-            _this.avatarString(tmpString);
-        }, function (rejected) {
-            _this.GetAvatar();
         });
     }
     HomeViewModel.prototype.GetCurrentName = function () {
@@ -50,4 +50,3 @@ var HomeViewModel = (function () {
     HomeViewModel.host = window.location.host;
     return HomeViewModel;
 }());
-//# sourceMappingURL=Home.js.map
