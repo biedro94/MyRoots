@@ -18,17 +18,18 @@ class HomeViewModel {
     constructor() {
         this.GetCurrentName().then((resolve) => {
             this.firstAndLastName(resolve);
+            this.GetAvatar().then((resolve) => {
+                let tmpString = "data:image/bmp;base64," + resolve;
+                this.avatarString(tmpString);
+
+            }, (rejected) => {
+                this.GetAvatar();
+            });
         }, (rejected) => {
             this.GetCurrentName();
             });
 
-        this.GetAvatar().then((resolve) => {
-            let tmpString = "data:image/bmp;base64," + resolve;
-            this.avatarString(tmpString);
-
-        }, (rejected) => {
-            this.GetAvatar();
-        });
+       
     }
 
     public static host: string = window.location.host;
