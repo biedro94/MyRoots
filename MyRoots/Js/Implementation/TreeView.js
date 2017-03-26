@@ -47,24 +47,24 @@ var TreeViewModel = (function () {
                 var dateOfDeath = $("#infos").find("input[name='dateOfDeath']").val();
                 var birthPlace = $("#infos").find("input[name='birthPlace']").val();
                 var description = $("#infos").find("input[name='description']").val();
-                var degreeOfRelationshipId = $('#infos option:selected').val();
-                if (degreeOfRelationshipId == "Ja") {
-                    fm.degreeOfRelationshipId(new DegreeOfRelationship(2));
+                var DegreeOfRelationshipId = $('#infos option:selected').val();
+                if (DegreeOfRelationshipId == "Ja") {
+                    fm.degreeOfRelationship(new DegreeOfRelationship(2));
                 }
-                else if (degreeOfRelationshipId == "Brat") {
-                    fm.degreeOfRelationshipId(new DegreeOfRelationship(1));
+                else if (DegreeOfRelationshipId == "Brat") {
+                    fm.degreeOfRelationship(new DegreeOfRelationship(1));
                 }
-                else if (degreeOfRelationshipId == "Ojciec") {
-                    fm.degreeOfRelationshipId(new DegreeOfRelationship(4));
+                else if (DegreeOfRelationshipId == "Ojciec") {
+                    fm.degreeOfRelationship(new DegreeOfRelationship(4));
                 }
-                else if (degreeOfRelationshipId == "Dziadek") {
-                    fm.degreeOfRelationshipId(new DegreeOfRelationship(6));
+                else if (DegreeOfRelationshipId == "Dziadek") {
+                    fm.degreeOfRelationship(new DegreeOfRelationship(6));
                 }
-                else if (degreeOfRelationshipId == "Pradziadek") {
-                    fm.degreeOfRelationshipId(new DegreeOfRelationship(7));
+                else if (DegreeOfRelationshipId == "Pradziadek") {
+                    fm.degreeOfRelationship(new DegreeOfRelationship(7));
                 }
-                else if (degreeOfRelationshipId == "Prapradziadek") {
-                    fm.degreeOfRelationshipId(new DegreeOfRelationship(8));
+                else if (DegreeOfRelationshipId == "Prapradziadek") {
+                    fm.degreeOfRelationship(new DegreeOfRelationship(8));
                 }
                 fm.firstName(firstName);
                 fm.lastName(lastName);
@@ -90,7 +90,7 @@ var FamilyMember = (function () {
         this.description = ko.observable();
         this.image = ko.observable();
         this.treeId = ko.observable();
-        this.degreeOfRelationshipId = ko.observable();
+        this.degreeOfRelationship = ko.observable();
         this.id(0);
         this.firstName("");
         this.lastName("");
@@ -100,14 +100,14 @@ var FamilyMember = (function () {
         this.description("");
         this.image("");
         this.treeId(0);
-        this.degreeOfRelationshipId();
+        this.degreeOfRelationship(new DegreeOfRelationship(0));
     }
     return FamilyMember;
 }());
 var DegreeOfRelationship = (function () {
     function DegreeOfRelationship(data) {
-        this.degreeOfRealtionshipId = ko.observable();
-        this.degreeOfRealtionshipId(data);
+        this.DegreeOfRelationshipId = ko.observable();
+        this.DegreeOfRelationshipId(data);
     }
     return DegreeOfRelationship;
 }());
