@@ -69,3 +69,4 @@ var AccountManagement = (function () {
     AccountManagement.host = window.location.host;
     return AccountManagement;
 }());
+//# sourceMappingURL=AccountManagement.js.map
