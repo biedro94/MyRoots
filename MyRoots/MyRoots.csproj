@@ -436,7 +436,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Js\Controllers\" />
-    <Folder Include="Js\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -451,6 +450,7 @@
     <TypeScriptCompile Include="Js\Implementation\Home.ts" />
     <TypeScriptCompile Include="Js\Implementation\SettingsTree.ts" />
     <TypeScriptCompile Include="Js\Implementation\TreeView.ts" />
+    <TypeScriptCompile Include="Js\Models\ApplicationUser.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootbox\index.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\axcorlib.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\mscorlib.d.ts" />
