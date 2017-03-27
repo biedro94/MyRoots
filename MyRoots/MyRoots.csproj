@@ -330,6 +330,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Js\Implementation\AccountManagement.js" />
     <Content Include="Js\Implementation\Home.js" />
     <Content Include="Js\Implementation\SettingsTree.js" />
     <Content Include="Js\Implementation\TreeView.js" />
@@ -435,7 +436,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Js\Controllers\" />
-    <Folder Include="Js\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -446,9 +446,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Js\Implementation\AccountManagement.ts" />
     <TypeScriptCompile Include="Js\Implementation\Home.ts" />
     <TypeScriptCompile Include="Js\Implementation\SettingsTree.ts" />
     <TypeScriptCompile Include="Js\Implementation\TreeView.ts" />
+    <TypeScriptCompile Include="Js\Models\ApplicationUser.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootbox\index.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\axcorlib.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\mscorlib.d.ts" />

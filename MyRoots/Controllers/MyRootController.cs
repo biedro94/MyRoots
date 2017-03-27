@@ -10,6 +10,10 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
+using System.IO;
+using System.Drawing;
+using System.Web.Helpers;
+using System.Web.Script.Services;
 
 namespace MyRoots.Controllers
 {
@@ -72,7 +76,7 @@ namespace MyRoots.Controllers
         {
             string userid = User.Identity.GetUserId();
 
-            if(db.Trees.Any(c => c.ApplicationUser.Id == userid))
+            if (db.Trees.Any(c => c.ApplicationUser.Id == userid))
             {
                 return "Dla tego użytkownika jest już utworzone drzewo";
             }
@@ -219,13 +223,13 @@ namespace MyRoots.Controllers
             else
             {
                 return View();
-            }            
+            }
         }
 
         public ActionResult Register()
         {
 
-                return View();
+            return View();
         }
 
         public ActionResult Index()
@@ -239,17 +243,68 @@ namespace MyRoots.Controllers
         }
         public ActionResult AccountManagement()
         {
+            return View();
+        }
+
+
+
+        [HttpGet]
+        public string GetFirstName()
+        {
             string userId = User.Identity.GetUserId();
 
             if (userId != null)
             {
-                var queryImage = db.Users
+                var queryUser = db.Users
                     .Where(c => c.Id == userId)
                     .FirstOrDefault();
-                ViewBag.LastName = queryImage.LastName;
-                ViewBag.img = queryImage.Image;
+                return queryUser.FirstName;
             }
-            return View();
+            else
+                return "";
+
+        }
+
+        [HttpGet]
+        public string GetLastName()
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (userId != null)
+            {
+                var queryUser = db.Users
+                    .Where(c => c.Id == userId)
+                    .FirstOrDefault();
+                return queryUser.LastName;
+            }
+            else
+                return "";
+        }
+
+        [HttpGet]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetUser()
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (userId != null)
+            {
+                var queryUser = db.Users
+                    .Where(c => c.Id == userId)
+                    .FirstOrDefault();
+                return new JavaScriptSerializer().Serialize(queryUser);
+            }
+            else
+                return null;
+        }
+
+        [HttpPost]
+        public void UploadAvatarr(String img)
+        {
+            if(String.IsNullOrEmpty(img))
+            {
+
+            }
         }
 
         [HttpPost]
@@ -295,7 +350,7 @@ namespace MyRoots.Controllers
                     .Select(c => c.Image)
                     .FirstOrDefault();
                 if (queryImage != null)
-                    return queryImage;
+                    return  queryImage;
                 else
                     return null;
             }
@@ -303,11 +358,38 @@ namespace MyRoots.Controllers
                 return null; 
         }
 
+        [HttpPost]
+        public void ChangeUserNameAndLastName(string firstName, string lastName)
+        {
+            string userId = User.Identity.GetUserId();
+            bool test = false;
+
+
+            if (userId != null)
+            {
+                var queryUser = db.Users
+                    .Where(c => c.Id == userId)
+                    .FirstOrDefault();
+                if(firstName != null && firstName != queryUser.FirstName)
+                {
+                    queryUser.FirstName = firstName;
+                    test = true;
+                }
+                if (lastName != null && lastName != queryUser.LastName)
+                {
+                    queryUser.LastName = lastName;
+                    test = true;
+                }
+
+                if(test)
+                {
+                    db.Entry(queryUser).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }   
+        }
+
+
+
         }
    }
-=======
-            return View();
-        }
-    }
-}
->>>>>>> refs/remotes/origin/master
