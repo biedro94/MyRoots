@@ -4,11 +4,13 @@
 /// <reference path="../../scripts/typings/gateway/axcorlib.d.ts" />
 /// <reference path="../../scripts/typings/gateway/mscorlib.d.ts" />
 /// <reference path="../../scripts/typings/promise/promise.d.ts" />
+/// <reference path="../models/applicationuser.ts" />
 
 $(document).ready(function () {
     let vm = document.getElementById("user");
     ko.applyBindings(new AccountManagement(), vm);
 });
+
 
 class AccountManagement{
     public firstName = ko.observable();
@@ -16,27 +18,19 @@ class AccountManagement{
     public avatar = ko.observable();
     public fileInput = ko.observable();
     public image = ko.observable();
-    public string;
+    public applicationUser = ko.observable<ApplicationUser>();
+
 
     constructor() {
         this.GetCurrentName().then((resolve) => {
-            this.firstName(resolve);
-                this.GetCurrentLastName().then((resolve) => {
-                    this.lastName(resolve);
-                      this.GetCurrentImage().then((resolve) => {
-                          let tmpString = "data:image/bmp;base64," + resolve;
-                          this.avatar(tmpString);
-                      },
-                        (rejected) => {
-                            this.GetCurrentImage();
-                        }
-                    )
-                },
-                    (rejected) => {
-                        this.GetCurrentLastName();
-                    })
-
-        }, (rejected) => {
+            var json = ko.toJSON(resolve);
+        //    this.applicationUser(ko.toJS(resolve));
+            var parsed = JSON.parse(json);
+            this.applicationUser(parsed);
+            this.firstName(this.applicationUser().firstName);
+            this.lastName(this.applicationUser().lastName);
+            console.log(this.applicationUser().firstName);
+            }, (rejected) => {
             this.GetCurrentName();
         });
     }
@@ -78,8 +72,7 @@ class AccountManagement{
     public GetCurrentName() {
         return new Promise((resolve, rejected) => {
             $.ajax({
-                'url': 'http://' + HomeViewModel.host + '/MyRoot/GetFirstName',
-                'type': 'GET',
+                'url': 'http://' + HomeViewModel.host + '/MyRoot/GetUser',
                 'success': function (data) {
                     resolve(data);
                 }
@@ -87,7 +80,7 @@ class AccountManagement{
 
         });
     }
-
+    /*
     public GetCurrentImage() {
         return new Promise((resolve, rejected) => {
             $.ajax({
@@ -98,11 +91,6 @@ class AccountManagement{
                 }
             });
         });
-    }
-
-    public SetName(first,  last) {
-
-        console.log(first + " " + last);
     }
 
     public GetCurrentLastName() {
@@ -117,4 +105,5 @@ class AccountManagement{
 
         });
     }
+    */
 }
