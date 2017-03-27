@@ -97,24 +97,25 @@ namespace MyRoots.Controllers
         public bool CreateFamilyMember()
         {
             string jsonData = Request.Form[0];
+
+            FamilyMember fm = new FamilyMember();
             FamilyMember tmpfm = new FamilyMember();
 
-            tmpfm = JsonConvert.DeserializeObject<FamilyMember>(jsonData);
-
+            fm = JsonConvert.DeserializeObject<FamilyMember>(jsonData);
 
             string userId = User.Identity.GetUserId();
             int treeId = db.Trees
                 .Where(c => c.ApplicationUser.Id == userId)
                 .Select(c => c.TreeId).FirstOrDefault();
 
-            //tmpfm.FirstName = fm.FirstName;
-            //tmpfm.LastName = fm.LastName;
-            //tmpfm.DateOfBirth = fm.DateOfBirth;
-            //tmpfm.DateOfDeath = fm.DateOfDeath;
-            //tmpfm.BirthPlace = fm.BirthPlace;
-            //tmpfm.Description = fm.Description;
-            //tmpfm.Image = fm.Image;
-            //tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
+            tmpfm.FirstName = fm.FirstName;
+            tmpfm.LastName = fm.LastName;
+            tmpfm.DateOfBirth = fm.DateOfBirth;
+            tmpfm.DateOfDeath = fm.DateOfDeath;
+            tmpfm.BirthPlace = fm.BirthPlace;
+            tmpfm.Description = fm.Description;
+            tmpfm.Image = fm.Image;
+            tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
 
             tmpfm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
 

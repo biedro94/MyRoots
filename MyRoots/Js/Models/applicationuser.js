@@ -9,3 +9,4 @@ var ApplicationUser = (function () {
     }
     return ApplicationUser;
 }());
+//# sourceMappingURL=applicationuser.js.map
