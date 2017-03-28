@@ -10,20 +10,19 @@ $(document).ready(function () {
 });
 var HomeViewModel = (function () {
     function HomeViewModel() {
-        var _this = this;
+        //this.GetCurrentName().then((resolve) => {
+        //    this.firstAndLastName(resolve);
+        //    this.GetAvatar().then((resolve) => {
+        //        let tmpString = "data:image/bmp;base64," + resolve;
+        //        this.avatarString(tmpString);
         this.firstAndLastName = ko.observable();
         this.avatarString = ko.observable();
-        this.GetCurrentName().then(function (resolve) {
-            _this.firstAndLastName(resolve);
-            _this.GetAvatar().then(function (resolve) {
-                var tmpString = "data:image/bmp;base64," + resolve;
-                _this.avatarString(tmpString);
-            }, function (rejected) {
-                _this.GetAvatar();
-            });
-        }, function (rejected) {
-            _this.GetCurrentName();
-        });
+        //    }, (rejected) => {
+        //        this.GetAvatar();
+        //    });
+        //}, (rejected) => {
+        //    this.GetCurrentName();
+        //    });
     }
     HomeViewModel.prototype.GetCurrentName = function () {
         return new Promise(function (resolve, rejected) {
@@ -50,3 +49,4 @@ var HomeViewModel = (function () {
     HomeViewModel.host = window.location.host;
     return HomeViewModel;
 }());
+//# sourceMappingURL=Home.js.map
