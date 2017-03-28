@@ -5,3 +5,18 @@
 
 <h2>AccountManagement</h2>
 
+<section id="user">
+
+    <form data-bind="submit: sendChangedData">
+       Imie: <input type="text" data-bind="value: applicationUser().firstName, valueUpdate: 'afterkeydown'" /> <br/>
+       Nazwisko: <input type="text" data-bind="value: applicationUser().lastName, valueUpdate: 'afterkeydown'"  /> <br/>
+        <img data-bind="attr: {src:  applicationUser().image}" />
+        <input type="file" name="file" accept="image/*" data-bind="event: { change: function() {uploadImage($element.files[0])}}" />
+        <input type="submit" value="Zmień"/>
+    </form>
+</section>
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Js/Implementation/AccountManagement.js")"></script>
+}

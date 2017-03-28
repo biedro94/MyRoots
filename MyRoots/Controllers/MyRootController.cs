@@ -8,6 +8,12 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
+using System.IO;
+using System.Drawing;
+using System.Web.Helpers;
+using System.Web.Script.Services;
 
 namespace MyRoots.Controllers
 {
@@ -21,7 +27,7 @@ namespace MyRoots.Controllers
         {
             string userId = User.Identity.GetUserId();
 
-            if(userId != null)
+            if (userId != null)
             {
                 var query = db.Users
                     .Where(c => c.Id == userId)
@@ -65,11 +71,12 @@ namespace MyRoots.Controllers
             }
         }
 
+        [HttpPost]
         public string CreateTree(string treeName)
         {
             string userid = User.Identity.GetUserId();
 
-            if(db.Trees.Any(c => c.ApplicationUser.Id == userid))
+            if (db.Trees.Any(c => c.ApplicationUser.Id == userid))
             {
                 return "Dla tego użytkownika jest już utworzone drzewo";
             }
@@ -86,28 +93,36 @@ namespace MyRoots.Controllers
             }
         }
 
-        public FamilyMember CreateFamilyMember(string FirstName,string LastName,DateTime dateOfBirth,DateTime dateOfDeath,string BirthPlace,string Description,string Image,int DegreeOfRelationshipId)
+        [HttpPost]
+        public bool CreateFamilyMember()
         {
+            string jsonData = Request.Form[0];
+
+            FamilyMember fm = new FamilyMember();
+            FamilyMember tmpfm = new FamilyMember();
+
+            fm = JsonConvert.DeserializeObject<FamilyMember>(jsonData);
+
             string userId = User.Identity.GetUserId();
             int treeId = db.Trees
                 .Where(c => c.ApplicationUser.Id == userId)
                 .Select(c => c.TreeId).FirstOrDefault();
 
-            FamilyMember fm = new FamilyMember();
-            fm.FirstName = FirstName;
-            fm.LastName = LastName;
-            fm.DateOfBirth = dateOfBirth;
-            fm.DateOfDeath = dateOfDeath;
-            fm.BirthPlace = BirthPlace;
-            fm.Description = Description;
-            fm.Image = Image;
-            fm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == DegreeOfRelationshipId).FirstOrDefault();
-            fm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+            tmpfm.FirstName = fm.FirstName;
+            tmpfm.LastName = fm.LastName;
+            tmpfm.DateOfBirth = fm.DateOfBirth;
+            tmpfm.DateOfDeath = fm.DateOfDeath;
+            tmpfm.BirthPlace = fm.BirthPlace;
+            tmpfm.Description = fm.Description;
+            tmpfm.Image = fm.Image;
+            tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
 
-            db.FamilyMembers.Add(fm);
+            tmpfm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+
+            db.FamilyMembers.Add(tmpfm);
             db.SaveChanges();
 
-            return fm;
+            return true;
         }
 
         public void DeleteTree()
@@ -158,29 +173,29 @@ namespace MyRoots.Controllers
             return tree;
         }
 
-        public FamilyMember EditFamilyMember(int fmId, string FirstName, string LastName, DateTime dateOfBirth, DateTime dateOfDeath, string BirthPlace, string Description, string Image, int DegreeOfRelationshipId)
-        {
-            string userId = User.Identity.GetUserId();
-            int treeId = db.Trees
-                .Where(c => c.ApplicationUser.Id == userId)
-                .Select(c => c.TreeId).FirstOrDefault();
+        //public FamilyMember EditFamilyMember(int fmId, string FirstName, string LastName, DateTime dateOfBirth, DateTime dateOfDeath, string BirthPlace, string Description, string Image, int DegreeOfRelationshipId)
+        //{
+        //    string userId = User.Identity.GetUserId();
+        //    int treeId = db.Trees
+        //        .Where(c => c.ApplicationUser.Id == userId)
+        //        .Select(c => c.TreeId).FirstOrDefault();
 
-            FamilyMember fm = db.FamilyMembers.Where(c => c.Id == fmId).FirstOrDefault();
-            fm.FirstName = FirstName;
-            fm.LastName = LastName;
-            fm.DateOfBirth = dateOfBirth;
-            fm.DateOfDeath = dateOfDeath;
-            fm.BirthPlace = BirthPlace;
-            fm.Description = Description;
-            fm.Image = Image;
-            fm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == DegreeOfRelationshipId).FirstOrDefault();
-            fm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+        //    FamilyMember fm = db.FamilyMembers.Where(c => c.Id == fmId).FirstOrDefault();
+        //    fm.FirstName = FirstName;
+        //    fm.LastName = LastName;
+        //    fm.DateOfBirth = dateOfBirth;
+        //    fm.DateOfDeath = dateOfDeath;
+        //    fm.BirthPlace = BirthPlace;
+        //    fm.Description = Description;
+        //    fm.Image = Image;
+        //    fm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == DegreeOfRelationshipId).FirstOrDefault();
+        //    fm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
 
-            db.Entry(fm).State = EntityState.Modified;
-            db.SaveChanges();
+        //    db.Entry(fm).State = EntityState.Modified;
+        //    db.SaveChanges();
 
-            return fm;
-        }
+        //    return fm;
+        //}
 
         public ICollection<FamilyMember> GetAllFamilyMembers()
         {
@@ -209,13 +224,13 @@ namespace MyRoots.Controllers
             else
             {
                 return View();
-            }            
+            }
         }
 
         public ActionResult Register()
         {
 
-                return View();
+            return View();
         }
 
         public ActionResult Index()
@@ -231,5 +246,143 @@ namespace MyRoots.Controllers
         {
             return View();
         }
+
+
+
+        [HttpGet]
+        public string GetFirstName()
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (userId != null)
+            {
+                var queryUser = db.Users
+                    .Where(c => c.Id == userId)
+                    .FirstOrDefault();
+                return queryUser.FirstName;
+            }
+            else
+                return "";
+
+        }
+
+        [HttpGet]
+        public string GetLastName()
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (userId != null)
+            {
+                var queryUser = db.Users
+                    .Where(c => c.Id == userId)
+                    .FirstOrDefault();
+                return queryUser.LastName;
+            }
+            else
+                return "";
+        }
+
+        [HttpGet]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetUser()
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (userId != null)
+            {
+                var queryUser = db.Users
+                    .Where(c => c.Id == userId)
+                    .FirstOrDefault();
+                return new JavaScriptSerializer().Serialize(queryUser);
+            }
+            else
+                return null;
+        }
+
+        [HttpPost]
+        public void UploadAvatarr(String img)
+        {
+            if(String.IsNullOrEmpty(img))
+            {
+
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UploadAvatar()
+        {
+            string userId = User.Identity.GetUserId();
+            if (Request.Files.Count > 0)
+            {
+                var file = Request.Files[0];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    byte[] imageAsBytes = new byte[file.ContentLength];
+
+                    using (BinaryReader reader = new BinaryReader(file.InputStream))
+                    {
+                        imageAsBytes = reader.ReadBytes(file.ContentLength);
+                    }
+
+                    string thePicture = Convert.ToBase64String(imageAsBytes);
+
+                    var queryUser = db.Users
+                    .Where(c => c.Id == userId).FirstOrDefault();
+                    queryUser.Image = thePicture;
+                    
+                    db.Entry(queryUser).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("AccountManagement", "MyRoot");
+        }
+
+        [HttpGet]
+        public string GetAvatarForUser()
+        {
+            string userId = User.Identity.GetUserId(); 
+
+            if (userId != null)
+            {
+                var queryImage = db.Users
+                    .Where(c => c.Id == userId)
+                    .Select(c => c.Image)
+                    .FirstOrDefault();
+                if (queryImage != null)
+                    return  queryImage;
+                else
+                    return null;
+            }
+            else
+                return null; 
+        }
+
+        [HttpPost]
+        public bool ChangeUserData()
+        {
+            string jsonData = Request.Form[0];
+            ApplicationUser tmpfm = new ApplicationUser();
+
+            tmpfm = JsonConvert.DeserializeObject<ApplicationUser>(jsonData);
+
+            string userId = User.Identity.GetUserId();
+            var appUserTmp = db.Users.Where(c => c.Id == userId).FirstOrDefault();
+
+            if (tmpfm.FirstName != "" && tmpfm.LastName !="" && tmpfm.Image !="")
+            {
+                appUserTmp.FirstName = tmpfm.FirstName;
+                appUserTmp.LastName = tmpfm.LastName;
+                appUserTmp.Image = tmpfm.Image;
+
+                db.Entry(appUserTmp).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
     }
-}
+   }
