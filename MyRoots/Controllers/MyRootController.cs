@@ -97,24 +97,25 @@ namespace MyRoots.Controllers
         public bool CreateFamilyMember()
         {
             string jsonData = Request.Form[0];
+
+            FamilyMember fm = new FamilyMember();
             FamilyMember tmpfm = new FamilyMember();
 
-            tmpfm = JsonConvert.DeserializeObject<FamilyMember>(jsonData);
-
+            fm = JsonConvert.DeserializeObject<FamilyMember>(jsonData);
 
             string userId = User.Identity.GetUserId();
             int treeId = db.Trees
                 .Where(c => c.ApplicationUser.Id == userId)
                 .Select(c => c.TreeId).FirstOrDefault();
 
-            //tmpfm.FirstName = fm.FirstName;
-            //tmpfm.LastName = fm.LastName;
-            //tmpfm.DateOfBirth = fm.DateOfBirth;
-            //tmpfm.DateOfDeath = fm.DateOfDeath;
-            //tmpfm.BirthPlace = fm.BirthPlace;
-            //tmpfm.Description = fm.Description;
-            //tmpfm.Image = fm.Image;
-            //tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
+            tmpfm.FirstName = fm.FirstName;
+            tmpfm.LastName = fm.LastName;
+            tmpfm.DateOfBirth = fm.DateOfBirth;
+            tmpfm.DateOfDeath = fm.DateOfDeath;
+            tmpfm.BirthPlace = fm.BirthPlace;
+            tmpfm.Description = fm.Description;
+            tmpfm.Image = fm.Image;
+            tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
 
             tmpfm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
 
@@ -359,37 +360,29 @@ namespace MyRoots.Controllers
         }
 
         [HttpPost]
-        public void ChangeUserNameAndLastName(string firstName, string lastName)
+        public bool ChangeUserData()
         {
+            string jsonData = Request.Form[0];
+            ApplicationUser tmpfm = new ApplicationUser();
+
+            tmpfm = JsonConvert.DeserializeObject<ApplicationUser>(jsonData);
+
             string userId = User.Identity.GetUserId();
-            bool test = false;
+            var appUserTmp = db.Users.Where(c => c.Id == userId).FirstOrDefault();
 
-
-            if (userId != null)
+            if (tmpfm.FirstName != "" && tmpfm.LastName !="" && tmpfm.Image !="")
             {
-                var queryUser = db.Users
-                    .Where(c => c.Id == userId)
-                    .FirstOrDefault();
-                if(firstName != null && firstName != queryUser.FirstName)
-                {
-                    queryUser.FirstName = firstName;
-                    test = true;
-                }
-                if (lastName != null && lastName != queryUser.LastName)
-                {
-                    queryUser.LastName = lastName;
-                    test = true;
-                }
+                appUserTmp.FirstName = tmpfm.FirstName;
+                appUserTmp.LastName = tmpfm.LastName;
+                appUserTmp.Image = tmpfm.Image;
 
-                if(test)
-                {
-                    db.Entry(queryUser).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-            }   
+                db.Entry(appUserTmp).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
         }
-
-
-
-        }
+    }
    }

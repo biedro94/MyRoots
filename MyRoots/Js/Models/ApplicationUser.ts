@@ -1,13 +1,19 @@
-﻿class ApplicationUser {
+﻿/// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
+/// <reference path="../../Scripts/typings/knockout/knockout.d.ts" />
+/// <reference path="../../Scripts/typings/knockout/tests/jasmine.extensions.d.ts" />
 
-    public firstName = ko.observable<string>();
-    public lastName = ko.observable<string>();
-    public image = ko.observable<string>();
+export class ApplicationUser {
 
-    constructor() {
-        this.firstName("");
-        this.lastName("");
-        this.image("")
+        public firstName = ko.observable<string>();
+        public lastName = ko.observable<string>();
+        public image = ko.observable<string>();
 
-}
-}
+        constructor() {
+            this.firstName("");
+            this.lastName("");
+            this.image("");
+        }
+    }
+
+
+

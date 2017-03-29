@@ -17,46 +17,24 @@ var AccountManagement = (function () {
         this.avatar = ko.observable();
         this.fileInput = ko.observable();
         this.image = ko.observable();
-        this.applicationUser = ko.observable();
-        this.GetCurrentName().then(function (resolve) {
-            var json = ko.toJSON(resolve);
-            //    this.applicationUser(ko.toJS(resolve));
-            var parsed = JSON.parse(json);
-            _this.applicationUser(parsed);
-            _this.firstName(_this.applicationUser().firstName);
-            _this.lastName(_this.applicationUser().lastName);
-            console.log(_this.applicationUser().firstName);
-        }, function (rejected) {
-            _this.GetCurrentName();
-        });
+        this.applicationUser = ko.observable(new ApplicationUser());
+        this.getApplicationUserData().then(function (resolve) {
+            var jsonString = String(resolve);
+            var parse = JSON.parse(jsonString);
+            _this.applicationUser().firstName(String(parse.FirstName));
+            _this.applicationUser().lastName(String(parse.LastName));
+            _this.applicationUser().image(String(parse.Image));
+        }, function (rejected) { });
     }
-    AccountManagement.prototype.changeName = function () {
-        var _this = this;
-        console.log(this.firstName() + " " + this.lastName());
+    AccountManagement.prototype.sendChangedData = function () {
+        var ob = ko.toJSON(this.applicationUser());
         return new Promise(function (resolve, rejected) {
-            $.ajax({
-                'url': 'http://' + HomeViewModel.host + '/MyRoot/ChangeUserNameAndLastName?firstName=' + _this.firstName() + '&lastName=' + _this.lastName(),
-                'type': 'POST',
-                'success': function (data) {
-                    resolve(data);
-                }
+            $.post('http://' + HomeViewModel.host + '/MyRoot/ChangeUserData', ob, function (returnedData) {
+                resolve(returnedData);
             });
         });
     };
-    AccountManagement.prototype.uploadImage = function ($element) {
-        console.log($element);
-        /* return new Promise((resolve, rejected) => {
-             $.ajax({
-                 'url': 'http://' + HomeViewModel.host + '/MyRoot/UploadAvatarr?img=' + image(),
-                 'type': 'POST',
-                 'success': function (data) {
-                     resolve(data);
-                 }
-             });
- 
-         });*/
-    };
-    AccountManagement.prototype.GetCurrentName = function () {
+    AccountManagement.prototype.getApplicationUserData = function () {
         return new Promise(function (resolve, rejected) {
             $.ajax({
                 'url': 'http://' + HomeViewModel.host + '/MyRoot/GetUser',
@@ -66,6 +44,34 @@ var AccountManagement = (function () {
             });
         });
     };
+    AccountManagement.prototype.uploadImage = function (base64) {
+        var _this = this;
+        this.fileReader(base64).then(function (resolve) {
+            _this.applicationUser().image(String(resolve));
+        });
+    };
+    AccountManagement.prototype.fileReader = function (base64) {
+        return new Promise(function (resolve, rejected) {
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                resolve(reader.result);
+            }, false);
+            if (base64) {
+                reader.readAsDataURL(base64);
+            }
+        });
+    };
     AccountManagement.host = window.location.host;
     return AccountManagement;
+}());
+var ApplicationUser = (function () {
+    function ApplicationUser() {
+        this.firstName = ko.observable();
+        this.lastName = ko.observable();
+        this.image = ko.observable();
+        this.firstName("");
+        this.lastName("");
+        this.image("");
+    }
+    return ApplicationUser;
 }());
