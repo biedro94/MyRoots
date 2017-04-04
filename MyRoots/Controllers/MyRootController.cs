@@ -46,6 +46,11 @@ namespace MyRoots.Controllers
             return View();
         }
 
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
         [HttpGet]
         public string GetFirstNameAndLastName()
         {

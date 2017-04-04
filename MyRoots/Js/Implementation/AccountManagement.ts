@@ -11,14 +11,17 @@ $(document).ready(function () {
     ko.applyBindings(new AccountManagement(), vm);
 });
 
-class AccountManagement{
-    public firstName = ko.observable();
-    public lastName = ko.observable();
-    public avatar = ko.observable();
-    public fileInput = ko.observable();
-    public image = ko.observable();
-    public applicationUser = ko.observable<ApplicationUser>(new ApplicationUser());
+class AccountManagement {
+    public firstName = ko.observable(); // imie
+    public lastName = ko.observable(); // nazwisko
+    public avatar = ko.observable(); // avatar
+    public fileInput = ko.observable(); //plik wejsciowy
+    public image = ko.observable(); //obrazek
+    public applicationUser = ko.observable<ApplicationUser>(new ApplicationUser()); //uzytkownik zalogowany
     public static host: string = window.location.host;
+    public showMessage = ko.observable(); // wprowadzono nie poprawne dane i nie zmieniono danych w bazie taka jest koncepcja
+    public showTrueMessage = ko.observable(); // dodano do bazy
+
 
     constructor() {
         this.getApplicationUserData().then((resolve) => {
@@ -27,17 +30,23 @@ class AccountManagement{
             this.applicationUser().firstName(String(parse.FirstName));
             this.applicationUser().lastName(String(parse.LastName));
             this.applicationUser().image(String(parse.Image));
+            this.showMessage(false);
+            this.showTrueMessage(false);
+
         }, (rejected) => { });
     }
 
     public sendChangedData() {
+        this.showMessage(true);
+        this.showTrueMessage(true);
         let ob = ko.toJSON(this.applicationUser());
         return new Promise((resolve, rejected) => {
             $.post('http://' + HomeViewModel.host + '/MyRoot/ChangeUserData', ob, function (returnedData) {
-                resolve(returnedData);                
+                resolve(returnedData);
+
             });
-        });   
-    }   
+        });
+    }
 
     public getApplicationUserData() {
         return new Promise((resolve, rejected) => {
@@ -55,7 +64,7 @@ class AccountManagement{
         this.fileReader(base64).then((resolve) => {
             this.applicationUser().image(String(resolve));
         });
- 
+
     }
 
     public fileReader(base64) {
@@ -70,8 +79,9 @@ class AccountManagement{
             }
         });
     }
-}
 
+    
+}
 class ApplicationUser {
 
     public firstName = ko.observable<string>();
@@ -83,4 +93,6 @@ class ApplicationUser {
         this.lastName("");
         this.image("");
     }
+    
+
 }
