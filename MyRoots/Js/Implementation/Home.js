@@ -47,7 +47,7 @@ var HomeViewModel = (function () {
             });
         });
     };
-    HomeViewModel.host = window.location.host;
     return HomeViewModel;
 }());
+HomeViewModel.host = window.location.host;
 //# sourceMappingURL=Home.js.map

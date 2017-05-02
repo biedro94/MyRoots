@@ -66,7 +66,7 @@ var AccountManagement = (function () {
             });
         });
     };
-    AccountManagement.host = window.location.host;
     return AccountManagement;
 }());
+AccountManagement.host = window.location.host;
 //# sourceMappingURL=AccountManagement.js.map
