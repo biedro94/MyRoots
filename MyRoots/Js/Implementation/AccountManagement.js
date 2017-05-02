@@ -61,9 +61,9 @@ var AccountManagement = (function () {
             }
         });
     };
-    AccountManagement.host = window.location.host;
     return AccountManagement;
 }());
+AccountManagement.host = window.location.host;
 var ApplicationUser = (function () {
     function ApplicationUser() {
         this.firstName = ko.observable();
@@ -75,3 +75,4 @@ var ApplicationUser = (function () {
     }
     return ApplicationUser;
 }());
+//# sourceMappingURL=AccountManagement.js.map
