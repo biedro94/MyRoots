@@ -46,6 +46,11 @@ namespace MyRoots.Controllers
             return View();
         }
 
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
         [HttpGet]
         public string GetFirstNameAndLastName()
         {
@@ -374,37 +379,29 @@ namespace MyRoots.Controllers
         }
 
         [HttpPost]
-        public void ChangeUserNameAndLastName(string firstName, string lastName)
+        public bool ChangeUserData()
         {
+            string jsonData = Request.Form[0];
+            ApplicationUser tmpfm = new ApplicationUser();
+
+            tmpfm = JsonConvert.DeserializeObject<ApplicationUser>(jsonData);
+
             string userId = User.Identity.GetUserId();
-            bool test = false;
+            var appUserTmp = db.Users.Where(c => c.Id == userId).FirstOrDefault();
 
-
-            if (userId != null)
+            if (tmpfm.FirstName != "" && tmpfm.LastName !="" && tmpfm.Image !="")
             {
-                var queryUser = db.Users
-                    .Where(c => c.Id == userId)
-                    .FirstOrDefault();
-                if(firstName != null && firstName != queryUser.FirstName)
-                {
-                    queryUser.FirstName = firstName;
-                    test = true;
-                }
-                if (lastName != null && lastName != queryUser.LastName)
-                {
-                    queryUser.LastName = lastName;
-                    test = true;
-                }
+                appUserTmp.FirstName = tmpfm.FirstName;
+                appUserTmp.LastName = tmpfm.LastName;
+                appUserTmp.Image = tmpfm.Image;
 
-                if(test)
-                {
-                    db.Entry(queryUser).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-            }   
+                db.Entry(appUserTmp).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
         }
-
-
-
-        }
+    }
    }

@@ -16,18 +16,18 @@ class HomeViewModel {
     public avatarString = ko.observable();
 
     constructor() {
-        this.GetCurrentName().then((resolve) => {
-            this.firstAndLastName(resolve);
-            this.GetAvatar().then((resolve) => {
-                let tmpString = "data:image/bmp;base64," + resolve;
-                this.avatarString(tmpString);
+        //this.GetCurrentName().then((resolve) => {
+        //    this.firstAndLastName(resolve);
+        //    this.GetAvatar().then((resolve) => {
+        //        let tmpString = "data:image/bmp;base64," + resolve;
+        //        this.avatarString(tmpString);
 
-            }, (rejected) => {
-                this.GetAvatar();
-            });
-        }, (rejected) => {
-            this.GetCurrentName();
-            });
+        //    }, (rejected) => {
+        //        this.GetAvatar();
+        //    });
+        //}, (rejected) => {
+        //    this.GetCurrentName();
+        //    });
 
        
     }

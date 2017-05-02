@@ -1,3 +1,7 @@
+/// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
+/// <reference path="../../Scripts/typings/knockout/knockout.d.ts" />
+/// <reference path="../../Scripts/typings/knockout/tests/jasmine.extensions.d.ts" />
+"use strict";
 var ApplicationUser = (function () {
     function ApplicationUser() {
         this.firstName = ko.observable();
@@ -9,4 +13,5 @@ var ApplicationUser = (function () {
     }
     return ApplicationUser;
 }());
+exports.ApplicationUser = ApplicationUser;
 //# sourceMappingURL=applicationuser.js.map
