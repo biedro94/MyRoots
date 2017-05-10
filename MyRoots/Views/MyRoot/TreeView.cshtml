@@ -7,13 +7,17 @@
 <link rel="stylesheet" type="text/css" href="~/Content/treeView.css" />
 
 <section id="treeView">
+
+    <div id="tree" class="tree">
+        GOWNO JEBAC PETRU
+    </div>
     <div class="familymemberAdd">
         Dodaj<br/> członka</br> rodu:</br>
-        <a href="#" data-bind="click: familyMemberForm">
+        <a href="#" data-bind="click: $root.familyMemberForm">
             <span class="glyphicon glyphicon-plus-sign addIcon"></span>
         </a>&nbsp
           Drukuj<br />&nbsp drzewo</br>
-        <a href="#" data-bind="click: window.print()">
+        <a href="#" data-bind="click: function(){$root.printTree('tree')} ">
             <span class="glyphicon glyphicon-print addIcon"></span>
         </a>
     </div>
