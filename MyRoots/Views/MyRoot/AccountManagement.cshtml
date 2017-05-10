@@ -3,44 +3,51 @@
     ViewBag.Title = "AccountManagement";
 }
 
-<h2 style="width: 40%;margin: 0 auto;">Zarządzanie kontem</h2>
+<h2>Zmień swoje dane</h2>
 
 
 
     <section id="user">
-        <div style="width: 40%;margin: 0 auto;">
+    <div>
 
-            <h3>Zmień swoje dane </h3>
-            <form data-bind="submit: sendChangedData">
-                <div class="form-group">
-                    <label for="fname">Imię:</label>
-                    <input type="text" class="form-control" name="firstname" data-bind="value: applicationUser().firstName, valueUpdate: 'afterkeydown'"> <br />
-                </div>
-                <div class="form-group">
-                    <label for="lname">Nazwisko:</label>
-                    <input type="text" class="form-control" name="lastname" data-bind="value: applicationUser().lastName, valueUpdate: 'afterkeydown'">
-                 </div>
-                
 
-                    @*Imie: <input type="text" data-bind="value: applicationUser().firstName, valueUpdate: 'afterkeydown'" /> <br />
+        <hr />
+        <form data-bind="submit: sendChangedData">
+            <ul>
+                <li style="display:none"></li>
+            </ul>
+    
 
-                 Nazwisko: <input type="text" data-bind="value: applicationUser().lastName, valueUpdate: 'afterkeydown'" /> <br />*@
-
-                <img data-bind="attr: {src:  applicationUser().image}" />
-                    <input type="file" name="file" accept="image/*" data-bind="event: { change: function() {uploadImage($element.files[0])}}" />
-                    <input type="submit" value="Zmień" class="btn btn-primary" />
-
-            </form>
-
-            <div data-bind="visible: showMessage">
-                <label style="color : red;"> Wprowadzono nie poprane dane.</label>
-            </div>
-
-            <div data-bind="visible: showTrueMessage">
-                <label style="color : green;"> Twoje dane zostały zaktualizowane.</label>
-            </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="OldPassword">Imie</label>
+        <div class="col-md-10">
+            <input class="form-control" data-val="true" id="OldPassword" name="firstname" type="text" data-bind="value: applicationUser().firstName, valueUpdate: 'afterkeydown'">
         </div>
-       
+        <br />
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="OldPassword">Nazwisko</label>
+        <div class="col-md-10">
+            <input class="form-control" data-val="true" data-val-required="Pole Nazwiko jest wymagane." id="OldPassword" type="text" data-bind="value: applicationUser().lastName, valueUpdate: 'afterkeydown'">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Zmień" class="btn btn-primary" />
+        </div>
+    </div>
+    </form>
+
+    <div data-bind="visible: showMessage">
+        <label style="color : red;"> Wprowadzono nie poprane dane.</label>
+    </div>
+
+    <div data-bind="visible: showTrueMessage" align="center">
+        <label style="color : green;"> Twoje dane zostały zaktualizowane.</label>
+    </div>
+    </div>
+
 </section>
 
 @section Scripts

@@ -50,11 +50,6 @@ var AccountManagement = (function () {
             });
         });
     };
-
-    return AccountManagement;
-}());
-AccountManagement.host = window.location.host;
-=======
     AccountManagement.prototype.uploadImage = function (base64) {
         var _this = this;
         this.fileReader(base64).then(function (resolve) {
@@ -86,5 +81,4 @@ var ApplicationUser = (function () {
     }
     return ApplicationUser;
 }());
-
 //# sourceMappingURL=AccountManagement.js.map

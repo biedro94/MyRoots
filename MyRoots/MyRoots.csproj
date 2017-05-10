@@ -332,7 +332,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Js\Implementation\AccountManagement.js" />
-    <Content Include="Js\Implementation\ChangePassword.js" />
     <Content Include="Js\Implementation\Home.js" />
     <Content Include="Js\Implementation\SettingsTree.js" />
     <Content Include="Js\Implementation\TreeView.js" />
@@ -450,7 +449,6 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Js\Implementation\AccountManagement.ts" />
-    <TypeScriptCompile Include="Js\Implementation\ChangePassword.ts" />
     <TypeScriptCompile Include="Js\Implementation\Home.ts" />
     <TypeScriptCompile Include="Js\Implementation\SettingsTree.ts" />
     <TypeScriptCompile Include="Js\Implementation\TreeView.ts" />
