@@ -12,27 +12,21 @@ $(document).ready(function () {
 var AccountManagement = (function () {
     function AccountManagement() {
         var _this = this;
-        this.firstName = ko.observable(); // imie
-        this.lastName = ko.observable(); // nazwisko
-        this.avatar = ko.observable(); // avatar
-        this.fileInput = ko.observable(); //plik wejsciowy
-        this.image = ko.observable(); //obrazek
-        this.applicationUser = ko.observable(new ApplicationUser()); //uzytkownik zalogowany
-        this.showMessage = ko.observable(); // wprowadzono nie poprawne dane i nie zmieniono danych w bazie taka jest koncepcja
-        this.showTrueMessage = ko.observable(); // dodano do bazy
+        this.firstName = ko.observable();
+        this.lastName = ko.observable();
+        this.avatar = ko.observable();
+        this.fileInput = ko.observable();
+        this.image = ko.observable();
+        this.applicationUser = ko.observable(new ApplicationUser());
         this.getApplicationUserData().then(function (resolve) {
             var jsonString = String(resolve);
             var parse = JSON.parse(jsonString);
             _this.applicationUser().firstName(String(parse.FirstName));
             _this.applicationUser().lastName(String(parse.LastName));
             _this.applicationUser().image(String(parse.Image));
-            _this.showMessage(false);
-            _this.showTrueMessage(false);
         }, function (rejected) { });
     }
     AccountManagement.prototype.sendChangedData = function () {
-        this.showMessage(true);
-        this.showTrueMessage(true);
         var ob = ko.toJSON(this.applicationUser());
         return new Promise(function (resolve, rejected) {
             $.post('http://' + HomeViewModel.host + '/MyRoot/ChangeUserData', ob, function (returnedData) {
@@ -50,11 +44,6 @@ var AccountManagement = (function () {
             });
         });
     };
-
-    return AccountManagement;
-}());
-AccountManagement.host = window.location.host;
-=======
     AccountManagement.prototype.uploadImage = function (base64) {
         var _this = this;
         this.fileReader(base64).then(function (resolve) {
@@ -72,9 +61,9 @@ AccountManagement.host = window.location.host;
             }
         });
     };
-    AccountManagement.host = window.location.host;
     return AccountManagement;
 }());
+AccountManagement.host = window.location.host;
 var ApplicationUser = (function () {
     function ApplicationUser() {
         this.firstName = ko.observable();
@@ -86,5 +75,4 @@ var ApplicationUser = (function () {
     }
     return ApplicationUser;
 }());
-
 //# sourceMappingURL=AccountManagement.js.map
