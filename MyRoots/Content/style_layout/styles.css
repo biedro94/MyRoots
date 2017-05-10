@@ -21,6 +21,8 @@ body {
 
 ul li {
     list-style: none;
+    text-align: center;
+
 }
 
 a, a:hover, a:focus {
