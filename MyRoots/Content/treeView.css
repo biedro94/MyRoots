@@ -14,3 +14,7 @@ section#treeView{
     font-size:45px;
     padding-left:0.5em;
 }
+
+.tree{
+    background:red;
+}
