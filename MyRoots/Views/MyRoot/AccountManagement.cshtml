@@ -3,20 +3,47 @@
     ViewBag.Title = "AccountManagement";
 }
 
-<h2>AccountManagement</h2>
+<h2 style="width: 40%;margin: 0 auto;">Zarządzanie kontem</h2>
 
 
-Nazwisko: <input type="text" name="Nazwisko"  value="@ViewBag.LastName"/><br/>
-Hasło: <input type="password" name="Password" value=""/><br/>
-Powtórz Hasło <input type="password" name="RepeatPassword" value=""/> <br/>
-<img src="data:image/bmp;base64,@ViewBag.img" />
 
+    <section id="user">
+        <div style="width: 40%;margin: 0 auto;">
 
-@using (Html.BeginForm("UploadAvatar", "MyRoot", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            <h3>Zmień swoje dane </h3>
+            <form data-bind="submit: sendChangedData">
+                <div class="form-group">
+                    <label for="fname">Imię:</label>
+                    <input type="text" class="form-control" name="firstname" data-bind="value: applicationUser().firstName, valueUpdate: 'afterkeydown'"> <br />
+                </div>
+                <div class="form-group">
+                    <label for="lname">Nazwisko:</label>
+                    <input type="text" class="form-control" name="lastname" data-bind="value: applicationUser().lastName, valueUpdate: 'afterkeydown'">
+                 </div>
+                
+
+                    @*Imie: <input type="text" data-bind="value: applicationUser().firstName, valueUpdate: 'afterkeydown'" /> <br />
+
+                 Nazwisko: <input type="text" data-bind="value: applicationUser().lastName, valueUpdate: 'afterkeydown'" /> <br />*@
+
+                <img data-bind="attr: {src:  applicationUser().image}" />
+                    <input type="file" name="file" accept="image/*" data-bind="event: { change: function() {uploadImage($element.files[0])}}" />
+                    <input type="submit" value="Zmień" class="btn btn-primary" />
+
+            </form>
+
+            <div data-bind="visible: showMessage">
+                <label style="color : red;"> Wprowadzono nie poprane dane.</label>
+            </div>
+
+            <div data-bind="visible: showTrueMessage">
+                <label style="color : green;"> Twoje dane zostały zaktualizowane.</label>
+            </div>
+        </div>
+       
+</section>
+
+@section Scripts
 {
-   
-
-    <input type="file" name="file" accept="image/*" />
-            <input type="submit" value="Wybierz" id="submit" name="submit" />
+    <script src="@Url.Content("~/Js/Implementation/AccountManagement.js")"></script>
 }
-

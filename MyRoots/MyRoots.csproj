@@ -26,7 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>2.0</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.1</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -317,6 +317,7 @@
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\nav-expand.png" />
     <Content Include="Content\img\myroots.png" />
     <Content Include="Content\login.css" />
     <Content Include="Content\style_layout\font-awesome.css" />
@@ -330,6 +331,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Js\Implementation\AccountManagement.js" />
+    <Content Include="Js\Implementation\ChangePassword.js" />
     <Content Include="Js\Implementation\Home.js" />
     <Content Include="Js\Implementation\SettingsTree.js" />
     <Content Include="Js\Implementation\TreeView.js" />
@@ -431,11 +434,11 @@
     <Content Include="Views\MyRoot\SettingsTree.cshtml" />
     <Content Include="Views\MyRoot\TreeView.cshtml" />
     <Content Include="Views\MyRoot\AccountManagement.cshtml" />
+    <Content Include="Views\MyRoot\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Js\Controllers\" />
-    <Folder Include="Js\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -446,9 +449,12 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Js\Implementation\AccountManagement.ts" />
+    <TypeScriptCompile Include="Js\Implementation\ChangePassword.ts" />
     <TypeScriptCompile Include="Js\Implementation\Home.ts" />
     <TypeScriptCompile Include="Js\Implementation\SettingsTree.ts" />
     <TypeScriptCompile Include="Js\Implementation\TreeView.ts" />
+    <TypeScriptCompile Include="Js\Models\ApplicationUser.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootbox\index.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\axcorlib.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\mscorlib.d.ts" />

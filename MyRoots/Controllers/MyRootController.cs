@@ -10,6 +10,10 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
+using System.IO;
+using System.Drawing;
+using System.Web.Helpers;
+using System.Web.Script.Services;
 
 namespace MyRoots.Controllers
 {
@@ -38,6 +42,11 @@ namespace MyRoots.Controllers
         }
 
         public ActionResult SettingsTree()
+        {
+            return View();
+        }
+
+        public ActionResult ChangePassword()
         {
             return View();
         }
@@ -72,7 +81,7 @@ namespace MyRoots.Controllers
         {
             string userid = User.Identity.GetUserId();
 
-            if(db.Trees.Any(c => c.ApplicationUser.Id == userid))
+            if (db.Trees.Any(c => c.ApplicationUser.Id == userid))
             {
                 return "Dla tego użytkownika jest już utworzone drzewo";
             }
@@ -93,24 +102,25 @@ namespace MyRoots.Controllers
         public bool CreateFamilyMember()
         {
             string jsonData = Request.Form[0];
+
+            FamilyMember fm = new FamilyMember();
             FamilyMember tmpfm = new FamilyMember();
 
-            tmpfm = JsonConvert.DeserializeObject<FamilyMember>(jsonData);
-
+            fm = JsonConvert.DeserializeObject<FamilyMember>(jsonData);
 
             string userId = User.Identity.GetUserId();
             int treeId = db.Trees
                 .Where(c => c.ApplicationUser.Id == userId)
                 .Select(c => c.TreeId).FirstOrDefault();
 
-            //tmpfm.FirstName = fm.FirstName;
-            //tmpfm.LastName = fm.LastName;
-            //tmpfm.DateOfBirth = fm.DateOfBirth;
-            //tmpfm.DateOfDeath = fm.DateOfDeath;
-            //tmpfm.BirthPlace = fm.BirthPlace;
-            //tmpfm.Description = fm.Description;
-            //tmpfm.Image = fm.Image;
-            //tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
+            tmpfm.FirstName = fm.FirstName;
+            tmpfm.LastName = fm.LastName;
+            tmpfm.DateOfBirth = fm.DateOfBirth;
+            tmpfm.DateOfDeath = fm.DateOfDeath;
+            tmpfm.BirthPlace = fm.BirthPlace;
+            tmpfm.Description = fm.Description;
+            tmpfm.Image = fm.Image;
+            tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
 
             tmpfm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
 
@@ -168,6 +178,20 @@ namespace MyRoots.Controllers
             return tree;
         }
 
+        [HttpGet]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetTree()
+        {
+            string userId = User.Identity.GetUserId();
+            int treeId = db.Trees
+                .Where(c => c.ApplicationUser.Id == userId)
+                .Select(c => c.TreeId).FirstOrDefault();
+
+            Tree tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+
+            return new JavaScriptSerializer().Serialize(tree);
+        }
+
         //public FamilyMember EditFamilyMember(int fmId, string FirstName, string LastName, DateTime dateOfBirth, DateTime dateOfDeath, string BirthPlace, string Description, string Image, int DegreeOfRelationshipId)
         //{
         //    string userId = User.Identity.GetUserId();
@@ -219,13 +243,13 @@ namespace MyRoots.Controllers
             else
             {
                 return View();
-            }            
+            }
         }
 
         public ActionResult Register()
         {
 
-                return View();
+            return View();
         }
 
         public ActionResult Index()
@@ -239,17 +263,68 @@ namespace MyRoots.Controllers
         }
         public ActionResult AccountManagement()
         {
+            return View();
+        }
+
+
+
+        [HttpGet]
+        public string GetFirstName()
+        {
             string userId = User.Identity.GetUserId();
 
             if (userId != null)
             {
-                var queryImage = db.Users
+                var queryUser = db.Users
                     .Where(c => c.Id == userId)
                     .FirstOrDefault();
-                ViewBag.LastName = queryImage.LastName;
-                ViewBag.img = queryImage.Image;
+                return queryUser.FirstName;
             }
-            return View();
+            else
+                return "";
+
+        }
+
+        [HttpGet]
+        public string GetLastName()
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (userId != null)
+            {
+                var queryUser = db.Users
+                    .Where(c => c.Id == userId)
+                    .FirstOrDefault();
+                return queryUser.LastName;
+            }
+            else
+                return "";
+        }
+
+        [HttpGet]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetUser()
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (userId != null)
+            {
+                var queryUser = db.Users
+                    .Where(c => c.Id == userId)
+                    .FirstOrDefault();
+                return new JavaScriptSerializer().Serialize(queryUser);
+            }
+            else
+                return null;
+        }
+
+        [HttpPost]
+        public void UploadAvatarr(String img)
+        {
+            if(String.IsNullOrEmpty(img))
+            {
+
+            }
         }
 
         [HttpPost]
@@ -295,7 +370,7 @@ namespace MyRoots.Controllers
                     .Select(c => c.Image)
                     .FirstOrDefault();
                 if (queryImage != null)
-                    return queryImage;
+                    return  queryImage;
                 else
                     return null;
             }
@@ -303,11 +378,32 @@ namespace MyRoots.Controllers
                 return null; 
         }
 
-        }
-   }
-=======
-            return View();
+        [HttpPost]
+        public bool ChangeUserData()
+        {
+            string jsonData = Request.Form[0];
+            //ApplicationUser tmpfm = new ApplicationUser();
+
+            //tmpfm = JsonConvert.DeserializeObject<ApplicationUser>(jsonData);
+
+            var tmpjsonData = JsonConvert.DeserializeObject(jsonData);
+
+            //string userId = User.Identity.GetUserId();
+            //var appUserTmp = db.Users.Where(c => c.Id == userId).FirstOrDefault();
+
+            //if (tmpfm.FirstName != "" && tmpfm.LastName !="" && tmpfm.Image !="")
+            //{
+            //    appUserTmp.FirstName = tmpfm.FirstName;
+            //    appUserTmp.LastName = tmpfm.LastName;
+            //    appUserTmp.Image = tmpfm.Image;
+
+            //    db.Entry(appUserTmp).State = EntityState.Modified;
+            //    db.SaveChanges();
+
+            //    return true;
+            //}
+
+            return false;
         }
     }
-}
->>>>>>> refs/remotes/origin/master
+   }
