@@ -12,21 +12,27 @@ $(document).ready(function () {
 var AccountManagement = (function () {
     function AccountManagement() {
         var _this = this;
-        this.firstName = ko.observable();
-        this.lastName = ko.observable();
-        this.avatar = ko.observable();
-        this.fileInput = ko.observable();
-        this.image = ko.observable();
-        this.applicationUser = ko.observable(new ApplicationUser());
+        this.firstName = ko.observable(); // imie
+        this.lastName = ko.observable(); // nazwisko
+        this.avatar = ko.observable(); // avatar
+        this.fileInput = ko.observable(); //plik wejsciowy
+        this.image = ko.observable(); //obrazek
+        this.applicationUser = ko.observable(new ApplicationUser()); //uzytkownik zalogowany
+        this.showMessage = ko.observable(); // wprowadzono nie poprawne dane i nie zmieniono danych w bazie taka jest koncepcja
+        this.showTrueMessage = ko.observable(); // dodano do bazy
         this.getApplicationUserData().then(function (resolve) {
             var jsonString = String(resolve);
             var parse = JSON.parse(jsonString);
             _this.applicationUser().firstName(String(parse.FirstName));
             _this.applicationUser().lastName(String(parse.LastName));
             _this.applicationUser().image(String(parse.Image));
+            _this.showMessage(false);
+            _this.showTrueMessage(false);
         }, function (rejected) { });
     }
     AccountManagement.prototype.sendChangedData = function () {
+        this.showMessage(true);
+        this.showTrueMessage(true);
         var ob = ko.toJSON(this.applicationUser());
         return new Promise(function (resolve, rejected) {
             $.post('http://' + HomeViewModel.host + '/MyRoot/ChangeUserData', ob, function (returnedData) {
@@ -44,12 +50,27 @@ var AccountManagement = (function () {
             });
         });
     };
+
+    return AccountManagement;
+}());
+AccountManagement.host = window.location.host;
+=======
     AccountManagement.prototype.uploadImage = function (base64) {
-        //this.fileReader(base64).then((resolve) => {
-        //    this.applicationUser().image(String(resolve));
-        //});
-        this.applicationUser().fileObject(base64);
-        console.log(this.applicationUser().fileObject());
+        var _this = this;
+        this.fileReader(base64).then(function (resolve) {
+            _this.applicationUser().image(String(resolve));
+        });
+    };
+    AccountManagement.prototype.fileReader = function (base64) {
+        return new Promise(function (resolve, rejected) {
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                resolve(reader.result);
+            }, false);
+            if (base64) {
+                reader.readAsDataURL(base64);
+            }
+        });
     };
     AccountManagement.host = window.location.host;
     return AccountManagement;
@@ -59,12 +80,11 @@ var ApplicationUser = (function () {
         this.firstName = ko.observable();
         this.lastName = ko.observable();
         this.image = ko.observable();
-        this.fileObject = ko.observable();
         this.firstName("");
         this.lastName("");
         this.image("");
-        this.fileObject();
     }
     return ApplicationUser;
 }());
+
 //# sourceMappingURL=AccountManagement.js.map

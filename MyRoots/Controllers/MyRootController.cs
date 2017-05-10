@@ -46,6 +46,11 @@ namespace MyRoots.Controllers
             return View();
         }
 
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
         [HttpGet]
         public string GetFirstNameAndLastName()
         {
@@ -171,6 +176,20 @@ namespace MyRoots.Controllers
             db.SaveChanges();
 
             return tree;
+        }
+
+        [HttpGet]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetTree()
+        {
+            string userId = User.Identity.GetUserId();
+            int treeId = db.Trees
+                .Where(c => c.ApplicationUser.Id == userId)
+                .Select(c => c.TreeId).FirstOrDefault();
+
+            Tree tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+
+            return new JavaScriptSerializer().Serialize(tree);
         }
 
         //public FamilyMember EditFamilyMember(int fmId, string FirstName, string LastName, DateTime dateOfBirth, DateTime dateOfDeath, string BirthPlace, string Description, string Image, int DegreeOfRelationshipId)
