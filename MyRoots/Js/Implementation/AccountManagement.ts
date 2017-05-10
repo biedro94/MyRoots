@@ -52,24 +52,26 @@ class AccountManagement{
     }
 
     public uploadImage(base64) {
-        this.fileReader(base64).then((resolve) => {
-            this.applicationUser().image(String(resolve));
-        });
+        //this.fileReader(base64).then((resolve) => {
+        //    this.applicationUser().image(String(resolve));
+        //});
+        this.applicationUser().fileObject(base64);
+        console.log(this.applicationUser().fileObject()); 
  
     }
 
-    public fileReader(base64) {
-        return new Promise((resolve, rejected) => {
-            var reader = new FileReader();
-            reader.addEventListener("load", function () {
-                resolve(reader.result);
-            }, false);
+    //public fileReader(base64) {
+    //    return new Promise((resolve, rejected) => {
+    //        var reader = new FileReader();
+    //        reader.addEventListener("load", function () {
+    //            resolve(reader.result);
+    //        }, false);
 
-            if (base64) {
-                reader.readAsDataURL(base64);
-            }
-        });
-    }
+    //        if (base64) {
+    //            reader.readAsDataURL(base64);
+    //        }
+    //    });
+    //}
 }
 
 class ApplicationUser {
@@ -77,10 +79,12 @@ class ApplicationUser {
     public firstName = ko.observable<string>();
     public lastName = ko.observable<string>();
     public image = ko.observable<string>();
+    public fileObject = ko.observable<Object>();
 
     constructor() {
         this.firstName("");
         this.lastName("");
         this.image("");
+        this.fileObject();
     }
 }

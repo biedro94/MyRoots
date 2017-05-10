@@ -45,21 +45,11 @@ var AccountManagement = (function () {
         });
     };
     AccountManagement.prototype.uploadImage = function (base64) {
-        var _this = this;
-        this.fileReader(base64).then(function (resolve) {
-            _this.applicationUser().image(String(resolve));
-        });
-    };
-    AccountManagement.prototype.fileReader = function (base64) {
-        return new Promise(function (resolve, rejected) {
-            var reader = new FileReader();
-            reader.addEventListener("load", function () {
-                resolve(reader.result);
-            }, false);
-            if (base64) {
-                reader.readAsDataURL(base64);
-            }
-        });
+        //this.fileReader(base64).then((resolve) => {
+        //    this.applicationUser().image(String(resolve));
+        //});
+        this.applicationUser().fileObject(base64);
+        console.log(this.applicationUser().fileObject());
     };
     AccountManagement.host = window.location.host;
     return AccountManagement;
@@ -69,9 +59,12 @@ var ApplicationUser = (function () {
         this.firstName = ko.observable();
         this.lastName = ko.observable();
         this.image = ko.observable();
+        this.fileObject = ko.observable();
         this.firstName("");
         this.lastName("");
         this.image("");
+        this.fileObject();
     }
     return ApplicationUser;
 }());
+//# sourceMappingURL=AccountManagement.js.map

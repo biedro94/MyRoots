@@ -363,24 +363,26 @@ namespace MyRoots.Controllers
         public bool ChangeUserData()
         {
             string jsonData = Request.Form[0];
-            ApplicationUser tmpfm = new ApplicationUser();
+            //ApplicationUser tmpfm = new ApplicationUser();
 
-            tmpfm = JsonConvert.DeserializeObject<ApplicationUser>(jsonData);
+            //tmpfm = JsonConvert.DeserializeObject<ApplicationUser>(jsonData);
 
-            string userId = User.Identity.GetUserId();
-            var appUserTmp = db.Users.Where(c => c.Id == userId).FirstOrDefault();
+            var tmpjsonData = JsonConvert.DeserializeObject(jsonData);
 
-            if (tmpfm.FirstName != "" && tmpfm.LastName !="" && tmpfm.Image !="")
-            {
-                appUserTmp.FirstName = tmpfm.FirstName;
-                appUserTmp.LastName = tmpfm.LastName;
-                appUserTmp.Image = tmpfm.Image;
+            //string userId = User.Identity.GetUserId();
+            //var appUserTmp = db.Users.Where(c => c.Id == userId).FirstOrDefault();
 
-                db.Entry(appUserTmp).State = EntityState.Modified;
-                db.SaveChanges();
+            //if (tmpfm.FirstName != "" && tmpfm.LastName !="" && tmpfm.Image !="")
+            //{
+            //    appUserTmp.FirstName = tmpfm.FirstName;
+            //    appUserTmp.LastName = tmpfm.LastName;
+            //    appUserTmp.Image = tmpfm.Image;
 
-                return true;
-            }
+            //    db.Entry(appUserTmp).State = EntityState.Modified;
+            //    db.SaveChanges();
+
+            //    return true;
+            //}
 
             return false;
         }
