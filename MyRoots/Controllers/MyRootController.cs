@@ -46,6 +46,11 @@ namespace MyRoots.Controllers
             return View();
         }
 
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
         [HttpGet]
         public string GetFirstNameAndLastName()
         {
@@ -171,6 +176,20 @@ namespace MyRoots.Controllers
             db.SaveChanges();
 
             return tree;
+        }
+
+        [HttpGet]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetTree()
+        {
+            string userId = User.Identity.GetUserId();
+            int treeId = db.Trees
+                .Where(c => c.ApplicationUser.Id == userId)
+                .Select(c => c.TreeId).FirstOrDefault();
+
+            Tree tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+
+            return new JavaScriptSerializer().Serialize(tree);
         }
 
         //public FamilyMember EditFamilyMember(int fmId, string FirstName, string LastName, DateTime dateOfBirth, DateTime dateOfDeath, string BirthPlace, string Description, string Image, int DegreeOfRelationshipId)
@@ -363,24 +382,26 @@ namespace MyRoots.Controllers
         public bool ChangeUserData()
         {
             string jsonData = Request.Form[0];
-            ApplicationUser tmpfm = new ApplicationUser();
+            //ApplicationUser tmpfm = new ApplicationUser();
 
-            tmpfm = JsonConvert.DeserializeObject<ApplicationUser>(jsonData);
+            //tmpfm = JsonConvert.DeserializeObject<ApplicationUser>(jsonData);
 
-            string userId = User.Identity.GetUserId();
-            var appUserTmp = db.Users.Where(c => c.Id == userId).FirstOrDefault();
+            var tmpjsonData = JsonConvert.DeserializeObject(jsonData);
 
-            if (tmpfm.FirstName != "" && tmpfm.LastName !="" && tmpfm.Image !="")
-            {
-                appUserTmp.FirstName = tmpfm.FirstName;
-                appUserTmp.LastName = tmpfm.LastName;
-                appUserTmp.Image = tmpfm.Image;
+            //string userId = User.Identity.GetUserId();
+            //var appUserTmp = db.Users.Where(c => c.Id == userId).FirstOrDefault();
 
-                db.Entry(appUserTmp).State = EntityState.Modified;
-                db.SaveChanges();
+            //if (tmpfm.FirstName != "" && tmpfm.LastName !="" && tmpfm.Image !="")
+            //{
+            //    appUserTmp.FirstName = tmpfm.FirstName;
+            //    appUserTmp.LastName = tmpfm.LastName;
+            //    appUserTmp.Image = tmpfm.Image;
 
-                return true;
-            }
+            //    db.Entry(appUserTmp).State = EntityState.Modified;
+            //    db.SaveChanges();
+
+            //    return true;
+            //}
 
             return false;
         }
