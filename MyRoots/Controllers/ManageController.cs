@@ -244,7 +244,8 @@ namespace MyRoots.Controllers
                 }
                 return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
-            AddErrors(result);
+            ModelState.AddModelError("","Wprowadzono nie poprawne dane");
+         //   AddErrors(result);
             return View(model);
         }
 

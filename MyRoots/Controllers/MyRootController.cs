@@ -14,12 +14,15 @@ using System.IO;
 using System.Drawing;
 using System.Web.Helpers;
 using System.Web.Script.Services;
+using System.Threading.Tasks;
 
 namespace MyRoots.Controllers
 {
     public class MyRootController : Controller
     {
         public static ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
 
 
         [HttpGet]
@@ -42,11 +45,6 @@ namespace MyRoots.Controllers
         }
 
         public ActionResult SettingsTree()
-        {
-            return View();
-        }
-
-        public ActionResult ChangePassword()
         {
             return View();
         }
@@ -176,6 +174,20 @@ namespace MyRoots.Controllers
             db.SaveChanges();
 
             return tree;
+        }
+
+        [HttpGet]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetTree()
+        {
+            string userId = User.Identity.GetUserId();
+            int treeId = db.Trees
+                .Where(c => c.ApplicationUser.Id == userId)
+                .Select(c => c.TreeId).FirstOrDefault();
+
+            Tree tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
+
+            return new JavaScriptSerializer().Serialize(tree);
         }
 
         //public FamilyMember EditFamilyMember(int fmId, string FirstName, string LastName, DateTime dateOfBirth, DateTime dateOfDeath, string BirthPlace, string Description, string Image, int DegreeOfRelationshipId)
@@ -364,6 +376,67 @@ namespace MyRoots.Controllers
                 return null; 
         }
 
+
+        //
+        // GET: /MyRoot/ChangePassword
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        //
+        // POST: /MyRoot/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+            }
+            ModelState.AddModelError("", "Wprowadzono nie poprawne dane");
+            //   AddErrors(result);
+            return View(model);
+        }
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+
+
+
         [HttpPost]
         public bool ChangeUserData()
         {
@@ -375,11 +448,11 @@ namespace MyRoots.Controllers
             string userId = User.Identity.GetUserId();
             var appUserTmp = db.Users.Where(c => c.Id == userId).FirstOrDefault();
 
-            if (tmpfm.FirstName != "" && tmpfm.LastName !="" && tmpfm.Image !="")
+            if (tmpfm.FirstName != "" && tmpfm.LastName !="" )//&& tmpfm.Image !="")
             {
                 appUserTmp.FirstName = tmpfm.FirstName;
                 appUserTmp.LastName = tmpfm.LastName;
-                appUserTmp.Image = tmpfm.Image;
+               // appUserTmp.Image = tmpfm.Image;
 
                 db.Entry(appUserTmp).State = EntityState.Modified;
                 db.SaveChanges();
@@ -389,5 +462,16 @@ namespace MyRoots.Controllers
 
             return false;
         }
+        public enum ManageMessageId
+        {
+            AddPhoneSuccess,
+            ChangePasswordSuccess,
+            SetTwoFactorSuccess,
+            SetPasswordSuccess,
+            RemoveLoginSuccess,
+            RemovePhoneSuccess,
+            Error
+        }
+
     }
    }

@@ -70,7 +70,7 @@ namespace MyRoots.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View("Login.cshtml", model);
             }
 
             // This doesn't count login failures towards account lockout
@@ -87,7 +87,7 @@ namespace MyRoots.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                    return View("../Views/MyRoot/Login.cshtml", model);
             }
         }
 
@@ -232,9 +232,10 @@ namespace MyRoots.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword()
         {
-            return code == null ? View("Error") : View();
+            return View();
+           // return code == null ? View("Error") : View();
         }
 
         //
@@ -248,13 +249,15 @@ namespace MyRoots.Controllers
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            var id = User.Identity.GetUserId(); 
+            //var usr=   MyRootController.GetUserEmail();
+            //var user = await UserManager.FindByNameAsync(model.Email);
+            //if (user == null)
+            //{
+            //    // Don't reveal that the user does not exist
+            //    return RedirectToAction("ResetPasswordConfirmation", "Account");
+            //}
+            var result = await UserManager.ResetPasswordAsync(id, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
