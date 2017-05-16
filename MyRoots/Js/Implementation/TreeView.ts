@@ -52,7 +52,7 @@ class TreeViewModel {
 
         mywindow.focus(); // necessary for IE >= 10*/
         setTimeout(function () { mywindow.print(); }, 100000);
-       // mywindow.print();
+        mywindow.print();
        // mywindow.close();
 
     }
