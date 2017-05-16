@@ -25,7 +25,7 @@ var SettingsTreeViewModel = (function () {
             });
         });
     };
+    SettingsTreeViewModel.host = window.location.host;
     return SettingsTreeViewModel;
 }());
-SettingsTreeViewModel.host = window.location.host;
 //# sourceMappingURL=SettingsTree.js.map
