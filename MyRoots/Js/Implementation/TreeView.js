@@ -12,6 +12,32 @@ $(document).ready(function () {
 var TreeViewModel = (function () {
     function TreeViewModel() {
     }
+    TreeViewModel.prototype.printTree = function (elem) {
+        // var divElements = document.getElementById('tree').innerHTML;
+        //Get the HTML of whole page
+        //var oldPage = document.body.innerHTML;
+        //Reset the page's HTML with div's HTML only
+        // document.body.innerHTML =
+        //    "<html><head><link rel='stylesheet' type='text/ css' href='../../Content/treeView.css' /><title></title></head><body>" +
+        // divElements + "</body>";
+        //Print Page
+        //   window.print();
+        ////Restore orignal HTML
+        // document.body.innerHTML = oldPage;
+        var mywindow = window.open('', 'PRINT', 'height=768,width=1366');
+        mywindow.document.write("<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"../../Content/treeView.css\" /><title>" + document.title + "</title>");
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        var data = document.getElementById(elem).innerHTML;
+        console.log(data);
+        mywindow.document.write(data);
+        mywindow.document.write('</body></html>');
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+        setTimeout(function () { mywindow.print(); }, 100000);
+        mywindow.print();
+        // mywindow.close();
+    };
     TreeViewModel.prototype.insertFamilyMember = function (fmember) {
         return new Promise(function (resolve, rejected) {
             var data = ko.toJSON(fmember);
