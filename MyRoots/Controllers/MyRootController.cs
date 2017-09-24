@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Web.Helpers;
 using System.Web.Script.Services;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace MyRoots.Controllers
 {
@@ -264,6 +265,11 @@ namespace MyRoots.Controllers
             return View();
         }
 
+        public ActionResult ForgotPassword()
+        {
+            return RedirectToAction("ForgotPassword", "Account");
+        }
+
 
 
         [HttpGet]
@@ -316,19 +322,68 @@ namespace MyRoots.Controllers
                 return null;
         }
 
-        [HttpPost]
+     /*   [HttpPost]
         public void UploadAvatarr(String img)
         {
             if(String.IsNullOrEmpty(img))
             {
 
             }
-        }
+        }*/
 
         [HttpPost]
         public ActionResult UploadAvatar()
         {
             string userId = User.Identity.GetUserId();
+            if(Request.Params.Count > 0)
+            {
+                var json = Request.Params.Keys[0]  +'"' + "}";
+                string jsonData = Request.Form[0];
+                try
+                {
+                    ImageChange tmpfm = new ImageChange();
+
+                    tmpfm = JsonConvert.DeserializeObject<ImageChange>(jsonData);
+
+                    if (tmpfm.image != "")
+                    {
+                        byte[] imageBytes = Encoding.ASCII.GetBytes(tmpfm.image);
+                        string base64String = Convert.ToBase64String(imageBytes, 0, imageBytes.Length);
+                        byte[] imageBytes1 = Convert.FromBase64String(base64String);
+                        string filePath = Server.MapPath("~/Images/" + tmpfm.imageName);
+
+                        using (var imageFile = new FileStream(filePath, FileMode.Create))
+                        {
+                            imageFile.Write(imageBytes1, 0, imageBytes1.Length);
+                            imageFile.Flush();
+                        }
+
+                        /* Image image;
+                         using (MemoryStream ms = new MemoryStream(imageBytes))
+                         {
+                             image = Image.FromStream(ms);
+                         }*/
+
+
+                   //     System.IO.File.WriteAllBytes(filePath, imageFile);
+                        // BinaryWriter writer = null;
+
+                        var queryUser = db.Users
+                .Where(c => c.Id == userId).FirstOrDefault();
+                        queryUser.Image = tmpfm.imageName;
+
+                        db.Entry(queryUser).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        return RedirectToAction("AccountManagement", "MyRoot");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
+            }
             if (Request.Files.Count > 0)
             {
                 var file = Request.Files[0];

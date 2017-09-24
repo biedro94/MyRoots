@@ -308,6 +308,7 @@
     <Compile Include="Models\DegreeOfRelationship.cs" />
     <Compile Include="Models\FamilyMember.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ImageChange.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Tree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -437,6 +438,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
     <Folder Include="Js\Controllers\" />
   </ItemGroup>
   <ItemGroup>

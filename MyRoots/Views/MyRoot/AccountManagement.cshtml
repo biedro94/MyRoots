@@ -21,7 +21,7 @@
     <div class="form-group">
         <label class="col-md-2 control-label" for="OldPassword">Imie</label>
         <div class="col-md-10">
-            <input class="form-control" data-val="true" id="OldPassword" name="firstname" type="text" data-bind="value: applicationUser().firstName, valueUpdate: 'afterkeydown'">
+            <input class="form-control" data-val="true" id="OldPassword" name="FirstName" type="text" data-bind="value: applicationUser().firstName, valueUpdate: 'afterkeydown'">
         </div>
         <br />
     </div>
@@ -39,14 +39,12 @@
     </div>
     </form>
 
-    <div data-bind="visible: showMessage">
-        <label style="color : red;"> Wprowadzono nie poprane dane.</label>
-    </div>
-
-    <div data-bind="visible: showTrueMessage" align="center">
-        <label style="color : green;"> Twoje dane zostały zaktualizowane.</label>
-    </div>
-    </div>
+        <img data-bind="attr: {src:  applicationUser().image}" />
+         <form data-bind="submit: changeImage">
+            <input type="file" name="file" accept="image/*" data-bind="event: { change: function() {uploadImage($element.files[0])}}" />
+            <input type="submit" value="Zmień" class="btn btn-primary" />
+        </form>
+            </div>
 
 </section>
 

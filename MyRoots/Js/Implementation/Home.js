@@ -10,19 +10,16 @@ $(document).ready(function () {
 });
 var HomeViewModel = (function () {
     function HomeViewModel() {
-        //this.GetCurrentName().then((resolve) => {
-        //    this.firstAndLastName(resolve);
-        //    this.GetAvatar().then((resolve) => {
-        //        let tmpString = "data:image/bmp;base64," + resolve;
-        //        this.avatarString(tmpString);
+        var _this = this;
         this.firstAndLastName = ko.observable();
         this.avatarString = ko.observable();
-        //    }, (rejected) => {
-        //        this.GetAvatar();
-        //    });
-        //}, (rejected) => {
-        //    this.GetCurrentName();
-        //    });
+        this.GetCurrentName().then(function (resolve) {
+            _this.GetAvatar().then(function (resolve) {
+                var tmpString = "/Images/" + resolve;
+                _this.avatarString(tmpString);
+            }, function (rejected) { });
+            _this.firstAndLastName(resolve);
+        }, function (rejected) { });
     }
     HomeViewModel.prototype.GetCurrentName = function () {
         return new Promise(function (resolve, rejected) {
@@ -46,7 +43,17 @@ var HomeViewModel = (function () {
             });
         });
     };
+    //    this.GetAvatar().then((resolve) => {
+    //        let tmpString = "data:image/bmp;base64," + resolve;
+    //        this.avatarString(tmpString);
+    //    }, (rejected) => {
+    //        this.GetAvatar();
+    //  }/*);
+    /*  }, (rejected) => {
+          this.GetCurrentName();
+          });
+          */
+    //  }
     HomeViewModel.host = window.location.host;
     return HomeViewModel;
 }());
-//# sourceMappingURL=Home.js.map
