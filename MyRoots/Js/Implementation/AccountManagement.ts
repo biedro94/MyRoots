@@ -19,8 +19,6 @@ class AccountManagement {
     public image = ko.observable(); //obrazek
     public applicationUser = ko.observable<ApplicationUser>(new ApplicationUser()); //uzytkownik zalogowany
     public static host: string = window.location.host;
-    public showMessage = ko.observable(); // wprowadzono nie poprawne dane i nie zmieniono danych w bazie taka jest koncepcja
-    public showTrueMessage = ko.observable(); // dodano do bazy
 
 
     constructor() {
@@ -29,19 +27,27 @@ class AccountManagement {
             var parse = JSON.parse(jsonString);
             this.applicationUser().firstName(String(parse.FirstName));
             this.applicationUser().lastName(String(parse.LastName));
-            this.applicationUser().image(String(parse.Image));
-            this.showMessage(false);
-            this.showTrueMessage(false);
+
+            this.applicationUser().image("/Images/"+String(parse.Image));
 
         }, (rejected) => { });
     }
 
     public sendChangedData() {
-        this.showMessage(true);
-        this.showTrueMessage(true);
         let ob = ko.toJSON(this.applicationUser());
         return new Promise((resolve, rejected) => {
             $.post('http://' + HomeViewModel.host + '/MyRoot/ChangeUserData', ob, function (returnedData) {
+                resolve(returnedData);
+
+            });
+        });
+    }
+
+    public changeImage() {
+        let ob = ko.toJSON(this.applicationUser());
+        console.log(ob);
+        return new Promise((resolve, rejected) => {
+            $.post('http://' + HomeViewModel.host + '/MyRoot/UploadAvatar', ob, function (returnedData) {
                 resolve(returnedData);
 
             });
@@ -61,7 +67,11 @@ class AccountManagement {
     }
 
     public uploadImage(base64) {
+        console.log(base64);
+        this.applicationUser().imageName(base64.name)
+        this.applicationUser().imageType(base64.type)
         this.fileReader(base64).then((resolve) => {
+            //console.log(resolve);
             this.applicationUser().image(String(resolve));
         });
 
@@ -87,11 +97,15 @@ class ApplicationUser {
     public firstName = ko.observable<string>();
     public lastName = ko.observable<string>();
     public image = ko.observable<string>();
+    public imageName = ko.observable<string>();
+    public imageType = ko.observable<string>();
 
     constructor() {
         this.firstName("");
         this.lastName("");
         this.image("");
+        this.imageName("");
+        this.imageType("");
     }
     
 

@@ -52,6 +52,8 @@ namespace MyRoots.Models
         [Display(Name = "Nowe hasło")]
         public string NewPassword { get; set; }
 
+        [Required]
+        [StringLength(100, ErrorMessage = "Minimalna długośc hasła wynosi 6.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Potwierdź nowe hasło")]
         [Compare("NewPassword", ErrorMessage = "Wprowadzone hasła są róźne.")]
