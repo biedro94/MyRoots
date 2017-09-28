@@ -44,7 +44,18 @@
             <input type="file" name="file" accept="image/*" data-bind="event: { change: function() {uploadImage($element.files[0])}}" />
             <input type="submit" value="Zmień" class="btn btn-primary" />
         </form>
-            </div>
+       <!-- <form data-bind="submit: setImage">
+            <select id="selUserFilterOptions" runat="server" data-bind="value: level, event:{ change: $parent.permissionChanged}">
+                <option value="1">Mama</option>
+                <option value="2">Tata</option>
+                <option value="3">Dziadek</option>
+                <option value="4">Babcia</option>
+                <option value="5">Syn</option>
+                <option value="6">Córka</option>
+            </select>
+            <input type="submit" value="Zmień" class="btn btn-primary" />
+        </form>
+           --> </div>
 
 </section>
 

@@ -54,8 +54,9 @@ namespace MyRoots.Models
         public string Email { get; set; }
 
         [Required]
+        [StringLength(100, ErrorMessage = "Minimalna długośc hasła wynosi 6.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
         [Display(Name = "Zapamiętaj mnie ?")]
@@ -72,17 +73,17 @@ namespace MyRoots.Models
         [Required]
         [StringLength(100, ErrorMessage = "Minimalna długośc hasła wynosi 6.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Powtórz hasło")]
         [Compare("Password", ErrorMessage = "Hasła są róźne.")]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessage ="First Name is required")]
+        [Required(ErrorMessage ="Imie jest wymagane")]
         public string FirstName { get; set; }
-        [Required(ErrorMessage = "Last Name is required")]
+        [Required(ErrorMessage = "Nazwisko jest wymagane")]
         public string LastName { get; set; }
     }
 
@@ -96,11 +97,11 @@ namespace MyRoots.Models
         [Required]
         [StringLength(100, ErrorMessage = "Minimalna długość hasła wynosi 6 znaków", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Powtóz hasło")]
         [Compare("Password", ErrorMessage = "Hasłą są róźne")]
         public string ConfirmPassword { get; set; }
 
