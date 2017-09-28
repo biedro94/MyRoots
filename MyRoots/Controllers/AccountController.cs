@@ -72,7 +72,7 @@ namespace MyRoots.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("Login.cshtml", model);
+                return RedirectToAction("Login", "MyRoot");
             }
 
             // This doesn't count login failures towards account lockout
@@ -81,6 +81,8 @@ namespace MyRoots.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    ViewBag.message = "Zalogowałeś się.";
+                    TempData["Message"] = "Zalogowałeś się!";
                     return RedirectToAction("Index","MyRoot");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -88,8 +90,15 @@ namespace MyRoots.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View("../Views/MyRoot/Login.cshtml", model);
+                    ModelState.AddModelError(String.Empty, "Wprowadzony email i hasło są niepoprawne.");
+                    TempData["UserMessage"] = "Wprowadzony email i hasło nie są poprawe";
+                    Session["RegisterMessage"] = "Wprowadzony email i hasło nie są poprawe";
+                    ViewBag.register = "login";
+
+
+                    return RedirectToAction("Login", "MyRoot");
+                    //return View(model);
+
             }
         }
 

@@ -3,6 +3,14 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2> 
+@if (TempData["Message"] != null)
+{<div style="text-align:center">
+        <span class="alert-success">
+          <h4>  @TempData["Message"]</h4>
+        </span>
+    </div>
+}
 
-
+<div><h2>Stwórz własne drzewo genalogiczne</h2></div>
+<div> Przejdź do zakładki Drzewo rodowe</div>
+<div> Utwórz drzewo a później dodawaj swoich członków rodziny</div>
