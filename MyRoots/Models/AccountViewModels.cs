@@ -54,8 +54,9 @@ namespace MyRoots.Models
         public string Email { get; set; }
 
         [Required]
+        [StringLength(100, ErrorMessage = "Minimalna długośc hasła wynosi 6.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
         [Display(Name = "Zapamiętaj mnie ?")]
@@ -70,19 +71,19 @@ namespace MyRoots.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Długość hasła  powinna wynosić minimum 6 znaków", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Minimalna długośc hasła wynosi 6.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "Hasła są różne.")]
+        [Display(Name = "Powtórz hasło")]
+        [Compare("Password", ErrorMessage = "Hasła są róźne.")]
         public string ConfirmPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Imie jest wymagane")]
         public string FirstName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Nazwisko jest wymagane")]
         public string LastName { get; set; }
     }
 
@@ -94,14 +95,14 @@ namespace MyRoots.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Minimalna długość hasła wynosi 6 znaków", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Powtóz hasło")]
+        [Compare("Password", ErrorMessage = "Hasłą są róźne")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

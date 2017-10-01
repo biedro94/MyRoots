@@ -21,32 +21,41 @@
     <div class="form-group">
         <label class="col-md-2 control-label" for="OldPassword">Imie</label>
         <div class="col-md-10">
-            <input class="form-control" data-val="true" id="OldPassword" name="firstname" type="text" data-bind="value: applicationUser().firstName, valueUpdate: 'afterkeydown'">
+            <input class="form-control" data-val="true" id="OldPassword" name="FirstName" type="text" data-bind="value: applicationUser().firstName, valueUpdate: 'afterkeydown'">
         </div>
         <br />
     </div>
     <div class="form-group">
         <label class="col-md-2 control-label" for="OldPassword">Nazwisko</label>
         <div class="col-md-10">
-            <input class="form-control" data-val="true" data-val-required="Pole Nazwiko jest wymagane." id="OldPassword" type="text" data-bind="value: applicationUser().lastName, valueUpdate: 'afterkeydown'">
+            <input class="form-control" data-val="true" data-val-required="Last Name is required." id="OldPassword" type="text" data-bind="value: applicationUser().lastName, valueUpdate: 'afterkeydown'">
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Zmień" class="btn btn-primary" />
+            <input type="submit" value="Change" class="btn btn-primary" />
         </div>
     </div>
     </form>
 
-    <div data-bind="visible: showMessage">
-        <label style="color : red;"> Wprowadzono nie poprane dane.</label>
-    </div>
-
-    <div data-bind="visible: showTrueMessage" align="center">
-        <label style="color : green;"> Twoje dane zostały zaktualizowane.</label>
-    </div>
-    </div>
+        <img data-bind="attr: {src:  applicationUser().image}" />
+         <form data-bind="submit: changeImage">
+            <input type="file" name="file" accept="image/*" data-bind="event: { change: function() {uploadImage($element.files[0])}}" />
+            <input type="submit" value="Zmień" class="btn btn-primary" />
+        </form>
+       <!-- <form data-bind="submit: setImage">
+            <select id="selUserFilterOptions" runat="server" data-bind="value: level, event:{ change: $parent.permissionChanged}">
+                <option value="1">Mama</option>
+                <option value="2">Tata</option>
+                <option value="3">Dziadek</option>
+                <option value="4">Babcia</option>
+                <option value="5">Syn</option>
+                <option value="6">Córka</option>
+            </select>
+            <input type="submit" value="Zmień" class="btn btn-primary" />
+        </form>
+           --> </div>
 
 </section>
 

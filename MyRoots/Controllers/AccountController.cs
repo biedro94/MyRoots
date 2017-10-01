@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MyRoots.Models;
+using System.Net.Mail;
+using System.Net;
 
 namespace MyRoots.Controllers
 {
@@ -70,7 +72,7 @@ namespace MyRoots.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("Login.cshtml", model);
+                return RedirectToAction("Login", "MyRoot");
             }
 
             // This doesn't count login failures towards account lockout
@@ -79,6 +81,8 @@ namespace MyRoots.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    ViewBag.message = "Zalogowałeś się.";
+                    TempData["Message"] = "Zalogowałeś się!";
                     return RedirectToAction("Index","MyRoot");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -86,8 +90,15 @@ namespace MyRoots.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View("../Views/MyRoot/Login.cshtml", model);
+                    ModelState.AddModelError(String.Empty, "Wprowadzony email i hasło są niepoprawne.");
+                    TempData["UserMessage"] = "Wprowadzony email i hasło nie są poprawe";
+                    Session["RegisterMessage"] = "Wprowadzony email i hasło nie są poprawe";
+                    ViewBag.register = "login";
+
+
+                    return RedirectToAction("Login", "MyRoot");
+                    //return View(model);
+
             }
         }
 
@@ -169,7 +180,7 @@ namespace MyRoots.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return RedirectToAction("Register","MyRoot");
         }
 
         //
@@ -203,18 +214,35 @@ namespace MyRoots.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user.UserName == null )
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
+                try
+                {
+                    MailMessage mail = new MailMessage(model.Email, model.Email);
+                    SmtpClient client = new SmtpClient();
+                    client.Port = 25;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.UseDefaultCredentials = false;
+                    client.Host = "smtp.google.com";
+                    mail.Subject = "this is a test email.";
+                    mail.Body = "this is my test email body";
+                    client.Send(mail);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception caught in CreateTestMessage2(): {0}",
+                                ex.ToString());
+                }
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
