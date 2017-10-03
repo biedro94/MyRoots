@@ -338,6 +338,7 @@
     <Content Include="Js\Implementation\Home.js" />
     <Content Include="Js\Implementation\SettingsTree.js" />
     <Content Include="Js\Implementation\TreeView.js" />
+    <Content Include="Js\show.js" />
     <Content Include="Scripts\added_libs\sweetalert-dev.js" />
     <Content Include="Scripts\axcorlib.js" />
     <Content Include="Scripts\axcorlib.min.js" />
