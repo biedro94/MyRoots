@@ -176,3 +176,4 @@ var TreeViewModel = (function () {
 //        this.degreeOfRelationship(new DegreeOfRelationship(0));
 //    }
 //}
+//# sourceMappingURL=TreeView.js.map
