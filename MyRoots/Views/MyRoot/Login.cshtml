@@ -22,9 +22,12 @@
                         <p>
                             @if (TempData["UserMessage"] != null)
                             {
-                                <span class="alert-danger">
-                                    @TempData["UserMessage"]
+                                <div class="alert alert-danger alert-dismissable fade in" id="znikaj">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                                    <span class="alert-danger">
+                                        @TempData["UserMessage"]
                                     </span>
+                                    </div>
                                     }
 </p>
 

@@ -4,12 +4,28 @@
 }
 
 @if (TempData["Message"] != null)
-{<div style="text-align:center">
+{
+     <div class="alert alert-success alert-dismissable fade in" style="text-align:center"  id="znikaj">
+         <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+         <span class="alert-success">
+
+             <h4>  @TempData["Message"]</h4>
+         </span>
+     </div>
+}
+
+@if (TempData["SuccessRegister"] != null)
+{
+    <div class="alert alert-success alert-dismissable fade in" style="text-align:center" id="znikaj">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
         <span class="alert-success">
-          <h4>  @TempData["Message"]</h4>
+
+            <h4>  @TempData["SuccessRegister"]</h4>
         </span>
     </div>
 }
+
+
 
 <div><h2>Stwórz własne drzewo genalogiczne</h2></div>
 <div> Przejdź do zakładki Drzewo rodowe</div>
