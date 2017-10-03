@@ -6,6 +6,16 @@
 /// <reference path="../../scripts/typings/promise/promise.d.ts" />
 /// <reference path="../../scripts/typings/bootbox/index.d.ts" />
 
+
+interface FileReaderEventTarget extends EventTarget {
+    result: string
+}
+
+interface FileReaderEvent extends Event {
+    target: FileReaderEventTarget;
+    getMessage(): string;
+}
+
 $(document).ready(function () {
     var vm = document.getElementById("treeView");
     ko.applyBindings(new TreeViewModel(), vm);
@@ -13,22 +23,28 @@ $(document).ready(function () {
 
 class FamilyMember {
     public id = ko.observable<number>();
-    public firstName = ko.observable<string>();
-    public lastName = ko.observable<string>();
-    public dateOfBirth = ko.observable<string>();
-    public dateOfDeath = ko.observable<string>();
-    public birthPlace = ko.observable<string>();
-    public description = ko.observable<string>();
-    public image = ko.observable<string>();
-    public treeId = ko.observable<number>();
-    public degreeOfRelationship = ko.observable(new DegreeOfRelationship(0));
+    public FirstName = ko.observable<string>();
+    public LastName = ko.observable<string>();
+    public DateOfBirth = ko.observable<string>();
+    public DateOfDeath = ko.observable<string>();
+    public BirthPlace = ko.observable<string>();
+    public Description = ko.observable<string>();
+    public Image = ko.observable<string>();
+    public TreeId = ko.observable<number>();
+    public DegreeOfRelationship = ko.observable<DegreeOfRelationship>();
 }
 
 class DegreeOfRelationship {
     public DegreeOfRelationshipId = ko.observable<number>();
+    public Name = ko.observable<string>();
+    public ShortName = ko.observable<string>();
+    public Me = ko.observable<boolean>();
 
-    constructor(data) {
-        this.DegreeOfRelationshipId(data)
+    constructor(id: number, name: string, shortName: string, me: boolean) {
+        this.DegreeOfRelationshipId(id);
+        this.Name(name);
+        this.ShortName(shortName);
+        this.Me(me);
     }
 }
 
@@ -37,22 +53,98 @@ class TreeViewModel {
 
     public familyMemberList = ko.observableArray<FamilyMember>([]);
     public familyMemberToAdd = ko.observable(new FamilyMember());
+    public filebase64 = ko.observable();
+    public selectedDeegreeOfRelationShip = ko.observable<number>();
+    public degreesOfRelationShipsArray = ko.observableArray<DegreeOfRelationship>([]);
+
+
+    //public img = document.getElementById("fmImage");
 
     constructor() {
-
+        this.LoadDegreeOfRelationShipArray();
     }
+
+    public LoadDegreeOfRelationShipArray(): void {
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(1, "Ja", "JA", true));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(2, "Brat", "BR", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(3, "Siostra", "SIS", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(4, "Ojciec", "OJ", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(5, "Matka", "MT", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(6, "Dziadek", "DZI", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(7, "Babcia", "BAB", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(8, "Pradziadek", "PRDZI", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(9, "Prababcia", "PRBAB", false));
+    }
+
 
     public ShowPopUp(fmb): void {
         $(".bs-example-modal-sm").modal('show');
     }
 
     public AddFamilyMember(): void {
-        console.log(this.familyMemberToAdd());
-        this.insertFamilyMember(this.familyMemberToAdd());
+        this.familyMemberToAdd().DegreeOfRelationship(this.GetObjectFromArraybyValue(this.selectedDeegreeOfRelationShip()));
+        //console.log(this.familyMemberToAdd());
+        //this.insertFamilyMember(this.familyMemberToAdd());
+
+        this.insertFamilyMember(this.familyMemberToAdd()).then(resolve => {
+            console.log("POSZLO");
+        }, rejected => {
+            console.log("NIE POSZLO");
+        });
+    }
+
+    public GetObjectFromArraybyValue(val): DegreeOfRelationship {
+        return ko.utils.arrayFirst(this.degreesOfRelationShipsArray(), function (obj) {
+            return obj.DegreeOfRelationshipId() == val;
+        });
     }
 
     public UploadImage(file): void {
-        console.log(file);
+
+        this.GetBase64(file).then((response:string) => {
+            this.familyMemberToAdd().Image(response);
+        });        
+
+        //this.familyMemberToAdd().Image(reader.result);
+
+        //reader.onload = function (fileLoadedEvent: FileReaderEvent) {
+        //    var textAreaFileContents = document.getElementById
+        //        (
+        //        "fmImage"
+        //        );
+
+        //    console.log(fileLoadedEvent.target.result);
+        //    textAreaFileContents.innerHTML = fileLoadedEvent.target.result;
+        //    //result = fileLoadedEvent.target.result;
+        //};
+
+
+
+        //this.GetBase64(file).then((response)=>{
+        //    console.log(response);
+        //});
+
+        //this.familyMemberToAdd().Image(this.fileBase64());
+        //console.log(this.fileBase64());
+    }
+
+    public GetBase64(file) {
+        var reader = new FileReader();
+        var deferred = $.Deferred();
+        reader.onload = function (fileLoadedEvent: FileReaderEvent) {
+            deferred.resolve(fileLoadedEvent.target.result);
+            //console.log("weszlo");
+            //var textAreaFileContents = document.getElementById
+            //    (
+            //    "fmImage"
+            //    );
+            //textAreaFileContents.innerHTML = fileLoadedEvent.target.result;
+            //resolve(GetBase64());
+            //result = fileLoadedEvent.target.result;
+        };
+        reader.readAsDataURL(file);
+
+        return deferred.promise();
     }
 
     //public printTree(elem): void {
@@ -94,7 +186,8 @@ class TreeViewModel {
     public insertFamilyMember(fmember) {
         return new Promise((resolve, rejected) => {
             var data = ko.toJSON(fmember);
-            console.log(data);
+            //var data1 = JSON.stringify(data);            
+            //console.log(data);
             $.post('http://' + HomeViewModel.host + '/MyRoot/CreateFamilyMember', data, function (returnedData) {
                 resolve(returnedData);
             });
