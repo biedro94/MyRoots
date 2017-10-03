@@ -1,20 +1,58 @@
-﻿div.familymemberAdd{
-    display:flex;
-    align-items:flex-end;
-    height:100%;
+﻿div.familymemberAdd {
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
     justify-content: flex-end;
-    padding-left:1em;
+    padding-left: 1em;
 }
 
-section#treeView{
-    height:84.5vh;
+section#treeView {
+    height: 84.5vh;
 }
 
 .addIcon {
-    font-size:45px;
-    padding-left:0.5em;
+    font-size: 45px;
+    padding-left: 0.5em;
 }
 
-.tree{
-    background:red;
+.tree {
+    background: red;
 }
+
+.modal-content{
+    width:400px;
+}
+
+.modal-content form .input-group {
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    width: 100%;
+}
+
+.modal-content form .form-group {
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    width: 100%;
+}
+
+.modal-content form .input-group input {
+    width: 100%;
+}
+
+.modal-content form {
+    width: 300px;
+    margin: 0 auto;
+}
+
+    .modal-content form input[type=submit] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 5px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .modal-content form input[type=submit]:hover {
+            background-color: #45a049;
+        }

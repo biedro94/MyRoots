@@ -10,3 +10,4 @@ ko.bindingHandlers["bootstrapModal"] = {
         $(element).modal(props.show() ? 'show' : 'hide');
     }
 };
+//# sourceMappingURL=KoModal.js.map

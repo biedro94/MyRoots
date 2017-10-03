@@ -100,12 +100,18 @@ namespace MyRoots.Controllers
         [HttpPost]
         public bool CreateFamilyMember()
         {
-            string jsonData = Request.Form[0];
-
             FamilyMember fm = new FamilyMember();
             FamilyMember tmpfm = new FamilyMember();
+            var jsonString = String.Empty;
+            this.HttpContext.Request.InputStream.Position = 0;
 
-            fm = JsonConvert.DeserializeObject<FamilyMember>(jsonData);
+            using (var inputStream = new StreamReader(this.HttpContext.Request.InputStream))
+            {
+                jsonString = inputStream.ReadToEnd();
+            }
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            fm = serializer.Deserialize<FamilyMember>(jsonString);
 
             string userId = User.Identity.GetUserId();
             int treeId = db.Trees
@@ -119,7 +125,7 @@ namespace MyRoots.Controllers
             tmpfm.BirthPlace = fm.BirthPlace;
             tmpfm.Description = fm.Description;
             tmpfm.Image = fm.Image;
-            tmpfm.DegreeOfRelationship = fm.DegreeOfRelationship; /*db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();*/
+            tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
 
             tmpfm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
 

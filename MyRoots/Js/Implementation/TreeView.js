@@ -14,8 +14,8 @@ var FamilyMember = (function () {
         this.id = ko.observable();
         this.FirstName = ko.observable();
         this.LastName = ko.observable();
-        this.DateOfBirth = ko.observable();
-        this.DateOfDeath = ko.observable();
+        this.DateOfBirth = ko.observable(new Date());
+        this.DateOfDeath = ko.observable(new Date());
         this.BirthPlace = ko.observable();
         this.Description = ko.observable();
         this.Image = ko.observable();
@@ -63,10 +63,11 @@ var TreeViewModel = (function () {
     };
     TreeViewModel.prototype.AddFamilyMember = function () {
         this.familyMemberToAdd().DegreeOfRelationship(this.GetObjectFromArraybyValue(this.selectedDeegreeOfRelationShip()));
-        //console.log(this.familyMemberToAdd());
+        console.log(this.familyMemberToAdd());
         //this.insertFamilyMember(this.familyMemberToAdd());
         this.insertFamilyMember(this.familyMemberToAdd()).then(function (resolve) {
-            console.log("POSZLO");
+            $(".bs-example-modal-sm").modal('hide');
+            setTimeout($('.alert').show(), 1000);
         }, function (rejected) {
             console.log("NIE POSZLO");
         });
@@ -143,8 +144,9 @@ var TreeViewModel = (function () {
     TreeViewModel.prototype.insertFamilyMember = function (fmember) {
         return new Promise(function (resolve, rejected) {
             var data = ko.toJSON(fmember);
-            //var data1 = JSON.stringify(data);            
-            //console.log(data);
+            var data1 = JSON.stringify(data);
+            console.log(data1);
+            console.log(data);
             $.post('http://' + HomeViewModel.host + '/MyRoot/CreateFamilyMember', data, function (returnedData) {
                 resolve(returnedData);
             });
