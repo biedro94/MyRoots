@@ -455,7 +455,9 @@
     <TypeScriptCompile Include="Js\Implementation\SettingsTree.ts" />
     <TypeScriptCompile Include="Js\Implementation\TreeView.ts" />
     <TypeScriptCompile Include="Js\Models\ApplicationUser.ts" />
+    <TypeScriptCompile Include="Scripts\KoModal.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootbox\index.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\axcorlib.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\gateway\mscorlib.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
