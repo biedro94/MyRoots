@@ -119,7 +119,7 @@ namespace MyRoots.Controllers
             tmpfm.BirthPlace = fm.BirthPlace;
             tmpfm.Description = fm.Description;
             tmpfm.Image = fm.Image;
-            tmpfm.DegreeOfRelationship = db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();
+            tmpfm.DegreeOfRelationship = fm.DegreeOfRelationship; /*db.DegreesOfRelationship.Where(c => c.DegreeOfRelationshipId == fm.DegreeOfRelationship.DegreeOfRelationshipId).FirstOrDefault();*/
 
             tmpfm.Tree = db.Trees.Where(c => c.TreeId == treeId).FirstOrDefault();
 

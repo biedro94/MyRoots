@@ -12,39 +12,107 @@ $(document).ready(function () {
 var FamilyMember = (function () {
     function FamilyMember() {
         this.id = ko.observable();
-        this.firstName = ko.observable();
-        this.lastName = ko.observable();
-        this.dateOfBirth = ko.observable();
-        this.dateOfDeath = ko.observable();
-        this.birthPlace = ko.observable();
-        this.description = ko.observable();
-        this.image = ko.observable();
-        this.treeId = ko.observable();
-        this.degreeOfRelationship = ko.observable(new DegreeOfRelationship(0));
+        this.FirstName = ko.observable();
+        this.LastName = ko.observable();
+        this.DateOfBirth = ko.observable();
+        this.DateOfDeath = ko.observable();
+        this.BirthPlace = ko.observable();
+        this.Description = ko.observable();
+        this.Image = ko.observable();
+        this.TreeId = ko.observable();
+        this.DegreeOfRelationship = ko.observable();
     }
     return FamilyMember;
 }());
 var DegreeOfRelationship = (function () {
-    function DegreeOfRelationship(data) {
+    function DegreeOfRelationship(id, name, shortName, me) {
         this.DegreeOfRelationshipId = ko.observable();
-        this.DegreeOfRelationshipId(data);
+        this.Name = ko.observable();
+        this.ShortName = ko.observable();
+        this.Me = ko.observable();
+        this.DegreeOfRelationshipId(id);
+        this.Name(name);
+        this.ShortName(shortName);
+        this.Me(me);
     }
     return DegreeOfRelationship;
 }());
 var TreeViewModel = (function () {
+    //public img = document.getElementById("fmImage");
     function TreeViewModel() {
         this.familyMemberList = ko.observableArray([]);
         this.familyMemberToAdd = ko.observable(new FamilyMember());
+        this.filebase64 = ko.observable();
+        this.selectedDeegreeOfRelationShip = ko.observable();
+        this.degreesOfRelationShipsArray = ko.observableArray([]);
+        this.LoadDegreeOfRelationShipArray();
     }
+    TreeViewModel.prototype.LoadDegreeOfRelationShipArray = function () {
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(1, "Ja", "JA", true));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(2, "Brat", "BR", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(3, "Siostra", "SIS", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(4, "Ojciec", "OJ", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(5, "Matka", "MT", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(6, "Dziadek", "DZI", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(7, "Babcia", "BAB", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(8, "Pradziadek", "PRDZI", false));
+        this.degreesOfRelationShipsArray.push(new DegreeOfRelationship(9, "Prababcia", "PRBAB", false));
+    };
     TreeViewModel.prototype.ShowPopUp = function (fmb) {
         $(".bs-example-modal-sm").modal('show');
     };
     TreeViewModel.prototype.AddFamilyMember = function () {
-        console.log(this.familyMemberToAdd());
-        this.insertFamilyMember(this.familyMemberToAdd());
+        this.familyMemberToAdd().DegreeOfRelationship(this.GetObjectFromArraybyValue(this.selectedDeegreeOfRelationShip()));
+        //console.log(this.familyMemberToAdd());
+        //this.insertFamilyMember(this.familyMemberToAdd());
+        this.insertFamilyMember(this.familyMemberToAdd()).then(function (resolve) {
+            console.log("POSZLO");
+        }, function (rejected) {
+            console.log("NIE POSZLO");
+        });
+    };
+    TreeViewModel.prototype.GetObjectFromArraybyValue = function (val) {
+        return ko.utils.arrayFirst(this.degreesOfRelationShipsArray(), function (obj) {
+            return obj.DegreeOfRelationshipId() == val;
+        });
     };
     TreeViewModel.prototype.UploadImage = function (file) {
-        console.log(file);
+        var _this = this;
+        this.GetBase64(file).then(function (response) {
+            _this.familyMemberToAdd().Image(response);
+        });
+        //this.familyMemberToAdd().Image(reader.result);
+        //reader.onload = function (fileLoadedEvent: FileReaderEvent) {
+        //    var textAreaFileContents = document.getElementById
+        //        (
+        //        "fmImage"
+        //        );
+        //    console.log(fileLoadedEvent.target.result);
+        //    textAreaFileContents.innerHTML = fileLoadedEvent.target.result;
+        //    //result = fileLoadedEvent.target.result;
+        //};
+        //this.GetBase64(file).then((response)=>{
+        //    console.log(response);
+        //});
+        //this.familyMemberToAdd().Image(this.fileBase64());
+        //console.log(this.fileBase64());
+    };
+    TreeViewModel.prototype.GetBase64 = function (file) {
+        var reader = new FileReader();
+        var deferred = $.Deferred();
+        reader.onload = function (fileLoadedEvent) {
+            deferred.resolve(fileLoadedEvent.target.result);
+            //console.log("weszlo");
+            //var textAreaFileContents = document.getElementById
+            //    (
+            //    "fmImage"
+            //    );
+            //textAreaFileContents.innerHTML = fileLoadedEvent.target.result;
+            //resolve(GetBase64());
+            //result = fileLoadedEvent.target.result;
+        };
+        reader.readAsDataURL(file);
+        return deferred.promise();
     };
     //public printTree(elem): void {
     //   // var divElements = document.getElementById('tree').innerHTML;
@@ -75,7 +143,8 @@ var TreeViewModel = (function () {
     TreeViewModel.prototype.insertFamilyMember = function (fmember) {
         return new Promise(function (resolve, rejected) {
             var data = ko.toJSON(fmember);
-            console.log(data);
+            //var data1 = JSON.stringify(data);            
+            //console.log(data);
             $.post('http://' + HomeViewModel.host + '/MyRoot/CreateFamilyMember', data, function (returnedData) {
                 resolve(returnedData);
             });
@@ -107,4 +176,3 @@ var TreeViewModel = (function () {
 //        this.degreeOfRelationship(new DegreeOfRelationship(0));
 //    }
 //}
-//# sourceMappingURL=TreeView.js.map
