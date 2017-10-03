@@ -25,8 +25,8 @@ class FamilyMember {
     public id = ko.observable<number>();
     public FirstName = ko.observable<string>();
     public LastName = ko.observable<string>();
-    public DateOfBirth = ko.observable<string>();
-    public DateOfDeath = ko.observable<string>();
+    public DateOfBirth = ko.observable(new Date());
+    public DateOfDeath = ko.observable(new Date());
     public BirthPlace = ko.observable<string>();
     public Description = ko.observable<string>();
     public Image = ko.observable<string>();
@@ -83,11 +83,12 @@ class TreeViewModel {
 
     public AddFamilyMember(): void {
         this.familyMemberToAdd().DegreeOfRelationship(this.GetObjectFromArraybyValue(this.selectedDeegreeOfRelationShip()));
-        //console.log(this.familyMemberToAdd());
+        console.log(this.familyMemberToAdd());
         //this.insertFamilyMember(this.familyMemberToAdd());
 
         this.insertFamilyMember(this.familyMemberToAdd()).then(resolve => {
-            console.log("POSZLO");
+            $(".bs-example-modal-sm").modal('hide');
+            setTimeout($('.alert').show(),1000);
         }, rejected => {
             console.log("NIE POSZLO");
         });
@@ -186,8 +187,9 @@ class TreeViewModel {
     public insertFamilyMember(fmember) {
         return new Promise((resolve, rejected) => {
             var data = ko.toJSON(fmember);
-            //var data1 = JSON.stringify(data);            
-            //console.log(data);
+            var data1 = JSON.stringify(data); 
+            console.log(data1);           
+            console.log(data);
             $.post('http://' + HomeViewModel.host + '/MyRoot/CreateFamilyMember', data, function (returnedData) {
                 resolve(returnedData);
             });
