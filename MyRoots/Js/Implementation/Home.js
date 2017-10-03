@@ -57,4 +57,3 @@ var HomeViewModel = (function () {
     HomeViewModel.host = window.location.host;
     return HomeViewModel;
 }());
-//# sourceMappingURL=Home.js.map

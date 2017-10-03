@@ -14,4 +14,3 @@ var ApplicationUser = (function () {
     return ApplicationUser;
 }());
 exports.ApplicationUser = ApplicationUser;
-//# sourceMappingURL=applicationuser.js.map

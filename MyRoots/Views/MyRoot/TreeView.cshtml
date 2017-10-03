@@ -24,13 +24,15 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <h5> Dodawanie członka rodziny</h5>
-                <h3>Imię :</h3><input type="text" data-bind="textInput:familyMemberToAdd().firstName"><br />
-                <h3>Nazwisko :</h3><input type="text" data-bind="textInput:familyMemberToAdd().lastName"><br />
-                <h3>Data urodzenia :</h3><input type="date" data-bind="datePicker:familyMemberToAdd().dateOfBirth, datePattern: 'MM/DD/YYYY'"><br />
-                <h3>Miejsce urodzenia :</h3><input type="text" data-bind="textInput:familyMemberToAdd().birthPlace, datePattern: 'MM/DD/YYYY'"><br />
-                <h3>Data śmierci :</h3><input type="date" data-bind="datePicker:familyMemberToAdd().dateOfDeath"><br />
-                <h3>Obrazek :</h3><input type="file" data-bind="event: { change: function() { UploadImage($element.files[0]) } }"><br />
-                <h3>Opis :</h3><input type="text" data-bind="texInput:familyMemberToAdd().description"><br />
+                <h3>Imię :</h3><input type="text" data-bind="textInput:familyMemberToAdd().FirstName"><br />
+                <h3>Nazwisko :</h3><input type="text" data-bind="textInput:familyMemberToAdd().LastName"><br />
+                <h3>Data urodzenia :</h3><input type="date" data-bind="dateString:familyMemberToAdd().DateOfBirth, datePattern: 'MM/DD/YYYY'"><br />
+                <h3>Miejsce urodzenia :</h3><input type="text" data-bind="textInput:familyMemberToAdd().BirthPlace, datePattern: 'MM/DD/YYYY'"><br />
+                <h3>Data śmierci :</h3><input type="date" data-bind="dateString:familyMemberToAdd().DateOfDeath"><br />
+                <h3>Obrazek :</h3><input id="fmImage" type="file" data-bind="event: { change: function() { UploadImage($element.files[0]) } }"><br />
+                @*<h3>Obrazek :</h3><input id="fmImage" type="file" data-bind="file:{data:$element.fileInput}"><br />*@
+                <h3>Opis :</h3><input type="text" data-bind="texInput:familyMemberToAdd().Description"><br />
+                <h3>Stopień pokrewieństwa :</h3><select data-bind="options: degreesOfRelationShipsArray, optionsText:'Name',optionsValue:'DegreeOfRelationshipId', value:selectedDeegreeOfRelationShip"></select>
 
                 <input type="button" value="update" data-bind="click:function(){AddFamilyMember();}">
             </div>
