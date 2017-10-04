@@ -5,8 +5,8 @@
 
 <link rel="stylesheet" type="text/css" href="~/Content/treeView.css" />
 <section id="treeView">
-    <div class="alert alert-success" style="display: none">
-        <a class="close" onclick="$('.alert').hide()">×</a>
+    <div id="resultAlert" class="alert alert-success" style="display: none">
+        <a class="close" onclick="$('#resultAlert').hide()">×</a>
         <strong>Pomyślnie dodano członka rodziny</strong>
     </div>
     <button data-bind="click:function(){$root.ShowPopUp();}">Dodaj usera</button>
